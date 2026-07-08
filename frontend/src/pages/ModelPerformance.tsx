@@ -1,8 +1,8 @@
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  Area, ComposedChart, ResponsiveContainer,
+  XAxis, YAxis, CartesianGrid, Tooltip,
+  Area, ComposedChart, ResponsiveContainer, Line
 } from 'recharts'
-import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, BACKTEST, type Country } from '../data'
+import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, BACKTEST, type Country, computeCountryMAPE, computeOverallMAPE, computeOverallAccuracy } from '../data'
 
 // Circular progress ring
 function RingCard({ label, mape, accuracy, ringColor }: {
@@ -42,13 +42,13 @@ function RingCard({ label, mape, accuracy, ringColor }: {
 function BacktestChart({ country }: { country: Country }) {
   const data = BACKTEST[country]
   const color = COUNTRY_COLORS[country]
-  const mapeVals: Record<Country, string> = { Kyrgyzstan: '4.76%', Lesotho: '13.33%', Uzbekistan: '12.70%' }
+  const mape = computeCountryMAPE(country)
 
   return (
     <div className="card" style={{ flex: 1 }}>
       <div style={{ marginBottom: 10 }}>
         <div className="chart-title">{COUNTRY_FLAGS[country]} {country}</div>
-        <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>MAPE: {mapeVals[country]}</div>
+        <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>MAPE: {mape.toFixed(2)}%</div>
       </div>
       <ResponsiveContainer width="100%" height={180}>
         <ComposedChart data={data} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
@@ -63,7 +63,7 @@ function BacktestChart({ country }: { country: Country }) {
           <YAxis stroke="none" tick={{ fill: 'var(--text-secondary)', fontSize: 10 }} tickLine={false} tickFormatter={v => `${v}K`} />
           <Tooltip
             contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }}
-            formatter={(v: number, name: string) => [`${v?.toFixed(1)}K`, name]}
+            formatter={(v: any, name: any) => [`${v?.toFixed(1)}K`, name]}
           />
           <Area type="monotone" dataKey="predicted" stroke="none" fill={`url(#gap-${country})`} fillOpacity={1} name="" legendType="none" />
           <Line dataKey="actual" name="Actual" stroke="var(--gray-line)" strokeWidth={2} dot={{ r: 4, fill: 'var(--gray-line)' }} />
@@ -114,14 +114,20 @@ const PIPELINE = [
 ]
 
 export default function ModelPerformance() {
+  const overallMape = computeOverallMAPE()
+  const overallAcc = computeOverallAccuracy()
+  const kgMape = computeCountryMAPE('Kyrgyzstan')
+  const lsMape = computeCountryMAPE('Lesotho')
+  const uzMape = computeCountryMAPE('Uzbekistan')
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Accuracy KPI cards */}
       <div style={{ display: 'flex', gap: 14 }}>
-        <RingCard label="OVERALL MAPE" mape="10.26%" accuracy={89.74} ringColor="var(--green)" />
-        <RingCard label="KYRGYZSTAN MAPE" mape="4.76%" accuracy={95.24} ringColor="var(--green)" />
-        <RingCard label="LESOTHO MAPE" mape="13.33%" accuracy={86.67} ringColor="#f39c12" />
-        <RingCard label="UZBEKISTAN MAPE" mape="12.70%" accuracy={87.30} ringColor="#f39c12" />
+        <RingCard label="OVERALL MAPE" mape={`${overallMape.toFixed(2)}%`} accuracy={overallAcc} ringColor="var(--green)" />
+        <RingCard label="KYRGYZSTAN MAPE" mape={`${kgMape.toFixed(2)}%`} accuracy={100 - kgMape} ringColor="var(--green)" />
+        <RingCard label="LESOTHO MAPE" mape={`${lsMape.toFixed(2)}%`} accuracy={100 - lsMape} ringColor="#f39c12" />
+        <RingCard label="UZBEKISTAN MAPE" mape={`${uzMape.toFixed(2)}%`} accuracy={100 - uzMape} ringColor="#f39c12" />
       </div>
 
       {/* Backtest charts */}

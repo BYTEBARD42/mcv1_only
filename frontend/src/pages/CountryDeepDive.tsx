@@ -3,7 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, Area, AreaChart, ReferenceLine,
 } from 'recharts'
-import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, DEMO_DATA, FORECAST_BASELINE, FORECAST_YEARS, type Country } from '../data'
+import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, DEMO_DATA, FORECAST_BASELINE, FORECAST_YEARS, DEMO_TRENDS, getHistoricalSeries, type Country } from '../data'
 
 function Sparkline({ data, color }: { data: number[]; color: string }) {
   const min = Math.min(...data)
@@ -36,13 +36,14 @@ function DemoCard({ label, value, sparkData, color }: { label: string; value: st
 
 function buildCountryForecastChart(country: Country) {
   const base = FORECAST_BASELINE[country]
-  const histYears = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-  const baseVal = base[0]
-  const histData = histYears.map((y, i) => ({
-    year: y,
-    hist: +(baseVal * (0.78 + i * 0.022)).toFixed(1),
+  const histSeries = getHistoricalSeries(country).slice(-10) // last 10 years
+
+  const histData = histSeries.map((d: any) => ({
+    year: d.year,
+    hist: d.value,
     forecast: null as number | null,
   }))
+
   const forecastData = FORECAST_YEARS.map((y, i) => ({
     year: y,
     hist: null as number | null,
@@ -51,12 +52,12 @@ function buildCountryForecastChart(country: Country) {
   return [...histData, ...forecastData]
 }
 
-function buildDemoTrend(startVal: number, endVal: number, label: string) {
-  const years = [2000, 2010, 2020, 2025, 2030]
-  return years.map((y, i) => {
-    const t = i / (years.length - 1)
-    return { year: y, value: +(startVal + (endVal - startVal) * t).toFixed(2) }
-  })
+function buildDemoTrend(country: Country, metric: string) {
+  const trends = DEMO_TRENDS[country] || []
+  return trends.map((t: any) => ({
+    year: t.year,
+    value: t[metric]
+  }))
 }
 
 export default function CountryDeepDive() {
@@ -65,23 +66,25 @@ export default function CountryDeepDive() {
   const color = COUNTRY_COLORS[country]
   const chartData = buildCountryForecastChart(country)
   const ageDist = demo.ageDistribution2025
+  const trends = DEMO_TRENDS[country] || []
+  const recentTrends = trends.slice(-6)
 
   const demoCards = [
-    { label: 'Total Population', value: demo.totalPopulation.toLocaleString(), sparkData: [6.8, 6.9, 7.0, 7.1, 7.2, 7.3].map(v => v * 1e6 / 1e6) },
-    { label: 'Births (2025)', value: demo.births2025.toLocaleString(), sparkData: [145, 146, 147, 148, 149, 150] },
-    { label: 'Crude Birth Rate', value: `${demo.crudeBirthRate} per 1,000`, sparkData: [21.5, 21.2, 20.9, 20.7, 20.5, 20.2] },
-    { label: 'Infant Mortality Rate', value: `${demo.infantMortalityRate} per 1,000`, sparkData: [14.2, 13.5, 12.8, 12.2, 11.9, 11.7] },
-    { label: 'Under-5 Mortality', value: `${demo.under5Mortality} per 1,000`, sparkData: [17.5, 16.8, 16.0, 15.2, 14.5, 14.1] },
-    { label: 'Net Migration', value: `${demo.netMigration > 0 ? '+' : ''}${demo.netMigration.toLocaleString()}`, sparkData: [800, 1000, 1200, 1400, 1600, 1815] },
+    { label: 'Total Population', value: demo.totalPopulation.toLocaleString(), sparkData: recentTrends.map((t: any) => t.pop / 1e6) },
+    { label: 'Births (2025)', value: demo.births2025.toLocaleString(), sparkData: recentTrends.map((t: any) => t.births / 1e3) },
+    { label: 'Crude Birth Rate', value: `${demo.crudeBirthRate} per 1,000`, sparkData: recentTrends.map((t: any) => t.br) },
+    { label: 'Infant Mortality Rate', value: `${demo.infantMortalityRate} per 1,000`, sparkData: recentTrends.map((t: any) => t.imr) },
+    { label: 'Under-5 Mortality', value: `${demo.under5Mortality} per 1,000`, sparkData: recentTrends.map((t: any) => t.u5) },
+    { label: 'Net Migration', value: `${demo.netMigration > 0 ? '+' : ''}${demo.netMigration.toLocaleString()}`, sparkData: recentTrends.map((t: any) => t.mig) },
   ]
 
   const trendMinis = [
-    { title: 'Total Population', data: buildDemoTrend(6200000, 7700000, 'pop') },
-    { title: 'Births', data: buildDemoTrend(160000, 140000, 'births') },
-    { title: 'Birth Rate', data: buildDemoTrend(22, 18.5, 'br') },
-    { title: 'Infant Mortality Rate', data: buildDemoTrend(25, 9, 'imr') },
-    { title: 'Under-5 Mortality', data: buildDemoTrend(30, 11, 'u5') },
-    { title: 'Net Migration', data: buildDemoTrend(-2000, 3000, 'mig') },
+    { title: 'Total Population', data: buildDemoTrend(country, 'pop') },
+    { title: 'Births', data: buildDemoTrend(country, 'births') },
+    { title: 'Birth Rate', data: buildDemoTrend(country, 'br') },
+    { title: 'Infant Mortality Rate', data: buildDemoTrend(country, 'imr') },
+    { title: 'Under-5 Mortality', data: buildDemoTrend(country, 'u5') },
+    { title: 'Net Migration', data: buildDemoTrend(country, 'mig') },
   ]
 
   return (
@@ -123,11 +126,11 @@ export default function CountryDeepDive() {
               <YAxis type="category" dataKey="age" stroke="none" tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} width={44} />
               <Tooltip
                 contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
-                formatter={(v: number) => [`${v.toFixed(1)}K`, 'Population']}
+                formatter={(v: any) => [`${v.toFixed(1)}K`, 'Population']}
               />
               <Bar dataKey="value" radius={[0, 4, 4, 0]}
                 fill={color}
-                label={{ position: 'right', fill: 'var(--text-secondary)', fontSize: 10, formatter: (v: number) => `${v.toFixed(1)}K` }}
+                label={{ position: 'right', fill: 'var(--text-secondary)', fontSize: 10, formatter: (v: any) => `${v.toFixed(1)}K` }}
               />
             </BarChart>
           </ResponsiveContainer>
@@ -150,7 +153,7 @@ export default function CountryDeepDive() {
               <YAxis stroke="none" tick={{ fill: 'var(--text-secondary)', fontSize: 10 }} tickLine={false} tickFormatter={v => `${v}K`} />
               <Tooltip
                 contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
-                formatter={(v: number) => [`${v?.toFixed(1)}K`, '']}
+                formatter={(v: any) => [`${v?.toFixed(1)}K`, '']}
               />
               <ReferenceLine x={2024} stroke="rgba(255,255,255,0.15)" strokeDasharray="4 4" />
               <Line dataKey="hist" stroke="var(--gray-line)" strokeWidth={2} dot={{ r: 3, fill: 'var(--gray-line)' }} connectNulls name="Historical" />
@@ -162,7 +165,7 @@ export default function CountryDeepDive() {
 
       {/* Mini trend charts */}
       <div>
-        <div className="chart-title" style={{ marginBottom: 14 }}>Demographic Trends (2000–2030)</div>
+        <div className="chart-title" style={{ marginBottom: 14 }}>Demographic Trends (2000–2024)</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
           {trendMinis.map(mini => (
             <div key={mini.title} className="glass" style={{ padding: '14px 16px' }}>
@@ -175,7 +178,7 @@ export default function CountryDeepDive() {
                       <stop offset="95%" stopColor={color} stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <XAxis dataKey="year" tick={{ fill: 'var(--text-muted)', fontSize: 9 }} tickLine={false} axisLine={false} ticks={[2000, 2010, 2020, 2030]} />
+                  <XAxis dataKey="year" tick={{ fill: 'var(--text-muted)', fontSize: 9 }} tickLine={false} axisLine={false} ticks={[2000, 2010, 2020, 2024]} />
                   <YAxis hide />
                   <Tooltip
                     contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 6, fontSize: 11 }}

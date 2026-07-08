@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { loadDashboardData } from './data'
+import React, { useState, useEffect } from 'react'
+import { loadDashboardData, computeOverallAccuracy } from './data'
 import ExecutiveOverview from './pages/ExecutiveOverview'
 import CountryDeepDive from './pages/CountryDeepDive'
 import ScenarioAnalysis from './pages/ScenarioAnalysis'
@@ -9,7 +9,7 @@ import ModelPerformance from './pages/ModelPerformance'
 
 type Page = 'overview' | 'country' | 'scenario' | 'monte-carlo' | 'sensitivity' | 'model'
 
-const NAV: { id: Page; icon: JSX.Element; label: string }[] = [
+const NAV: { id: Page; icon: React.ReactNode; label: string }[] = [
   {
     id: 'overview',
     label: 'Overview',
@@ -103,7 +103,7 @@ export default function App() {
     )
   }
 
-  const pages: Record<Page, JSX.Element> = {
+  const pages: Record<Page, React.ReactNode> = {
     overview: <ExecutiveOverview />,
     country: <CountryDeepDive />,
     scenario: <ScenarioAnalysis />,
@@ -198,7 +198,7 @@ export default function App() {
               fontSize: 12, color: 'var(--blue)', fontWeight: 500,
               fontFamily: 'DM Mono, monospace',
             }}>
-              2025–2030 &nbsp;|&nbsp; Model Accuracy: 89.74%
+              2025–2030 &nbsp;|&nbsp; Model Accuracy: {computeOverallAccuracy().toFixed(2)}%
             </div>
           </div>
         </header>

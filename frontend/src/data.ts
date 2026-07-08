@@ -23,9 +23,8 @@ export let FEATURE_IMPORTANCE: Record<Country, any[]> = {} as any;
 export let ELASTICITY_DATA: Record<Country, Record<string, any[]>> = {} as any;
 export let BACKTEST: Record<Country, any[]> = {} as any;
 
-let kgHistorical: number[] = [];
-let lsHistorical: number[] = [];
-let uzHistorical: number[] = [];
+export let DEMO_TRENDS: Record<Country, any[]> = {} as any;
+export let HISTORICAL: Record<Country, {year: number, value: number}[]> = {} as any;
 
 export async function loadDashboardData() {
   const dataUrl = `${import.meta.env.BASE_URL}data.json`
@@ -40,16 +39,35 @@ export async function loadDashboardData() {
   ELASTICITY_DATA = data.elasticityData
   BACKTEST = data.backtest
   
-  kgHistorical = data.historical.Kyrgyzstan.map((d: any) => d.value)
-  lsHistorical = data.historical.Lesotho.map((d: any) => d.value)
-  uzHistorical = data.historical.Uzbekistan.map((d: any) => d.value)
+  DEMO_TRENDS = data.demographicTrends || {}
+  HISTORICAL = data.historical
 }
 
-const HIST_START = 2000
-
 export function getHistoricalSeries(country: Country) {
-  const data = country === 'Kyrgyzstan' ? kgHistorical : country === 'Lesotho' ? lsHistorical : uzHistorical
-  return data.map((v, i) => ({ year: HIST_START + i, value: v }))
+  return HISTORICAL[country] || []
+}
+
+export function computeCountryMAPE(country: Country): number {
+  const bt = BACKTEST[country] || []
+  if (bt.length === 0) return 0
+  const errors = bt.map((d: any) => Math.abs((d.actual - d.predicted) / d.actual))
+  return (errors.reduce((a: number, b: number) => a + b, 0) / errors.length) * 100
+}
+
+export function computeOverallMAPE(): number {
+  return COUNTRIES.reduce((sum, c) => sum + computeCountryMAPE(c), 0) / COUNTRIES.length
+}
+
+export function computeOverallAccuracy(): number {
+  return 100 - computeOverallMAPE()
+}
+
+export function getOverviewKPIs() {
+  const totalBirths2025 = COUNTRIES.reduce((sum, c) => sum + (DEMO_DATA[c]?.births2025 || 0), 0)
+  const forecast2025 = COUNTRIES.reduce((sum, c) => sum + ((FORECAST_BASELINE[c]?.[0] || 0) * 1000), 0)
+  const forecast2030 = COUNTRIES.reduce((sum, c) => sum + ((FORECAST_BASELINE[c]?.[5] || 0) * 1000), 0)
+  const pctChange = ((forecast2030 - forecast2025) / forecast2025) * 100
+  return { totalBirths2025, forecast2025, forecast2030, pctChange }
 }
 
 export const FORECAST_YEARS = [2025, 2026, 2027, 2028, 2029, 2030]

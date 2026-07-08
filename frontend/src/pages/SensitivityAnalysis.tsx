@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ReferenceLine, LineChart, Line, ResponsiveContainer,
 } from 'recharts'
 import { TORNADO_DATA, FEATURE_IMPORTANCE, ELASTICITY_DATA, Country } from '../data'
@@ -38,17 +38,17 @@ function TornadoBar({ data }: { data: any[] }) {
         />
         <Tooltip
           contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }}
-          formatter={(v: number, name: string) => [
+          formatter={(v: any, name: any) => [
             name === 'pos' ? `+${v.toFixed(2)}%` : `-${v.toFixed(2)}%`,
             name === 'pos' ? '+5% input' : '−5% input',
           ]}
         />
         <ReferenceLine x={0} stroke="rgba(255,255,255,0.3)" strokeWidth={1.5} />
         <Bar dataKey="pos" fill="#3498db" radius={[0, 4, 4, 0]}
-          label={{ position: 'right', fill: 'var(--text-secondary)', fontSize: 10, formatter: (v: number) => `+${v.toFixed(1)}%` }}
+          label={{ position: 'right', fill: 'var(--text-secondary)', fontSize: 10, formatter: (v: any) => `+${v.toFixed(1)}%` }}
         />
         <Bar dataKey="neg" fill="#e74c3c" radius={[4, 0, 0, 4]}
-          label={{ position: 'left', fill: 'var(--text-secondary)', fontSize: 10, formatter: (v: number) => `-${v.toFixed(1)}%` }}
+          label={{ position: 'left', fill: 'var(--text-secondary)', fontSize: 10, formatter: (v: any) => `-${v.toFixed(1)}%` }}
         />
       </BarChart>
     </ResponsiveContainer>
@@ -71,13 +71,14 @@ export default function SensitivityAnalysis() {
   const elasticityMap = ELASTICITY_DATA[selectedCountry] || {}
   const features = Object.keys(elasticityMap)
   const currentElasticity = elasticityMap[selectedFeature] || (features.length > 0 ? elasticityMap[features[0]] : [])
+  const maxScore = Math.max(...importance.map((f: any) => f.score), 0.1)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Controls */}
       <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
         <span className="label">Country</span>
-        <select className="pill-select" value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)}>
+        <select className="pill-select" value={selectedCountry} onChange={e => setSelectedCountry(e.target.value as Country)}>
           {COUNTRIES.map(c => <option key={c}>{c}</option>)}
         </select>
         <span className="label" style={{ marginLeft: 8 }}>Year</span>
@@ -124,7 +125,7 @@ export default function SensitivityAnalysis() {
               />
               <Tooltip
                 contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }}
-                formatter={(v: number) => [`${v.toFixed(2)}%`, 'MCV2 change']}
+                formatter={(v: any) => [`${v.toFixed(2)}%`, 'MCV2 change']}
                 labelFormatter={v => `Input: ${v}%`}
               />
               <ReferenceLine x={0} stroke="rgba(255,255,255,0.2)" strokeDasharray="4 4" />
@@ -147,7 +148,7 @@ export default function SensitivityAnalysis() {
                 <div style={{ flex: 1, height: 6, background: 'var(--border)', borderRadius: 3, overflow: 'hidden' }}>
                   <div style={{
                     height: '100%',
-                    width: `${(f.score / 0.82) * 100}%`,
+                    width: `${(f.score / maxScore) * 100}%`,
                     background: IMPACT_COLORS[f.impact],
                     borderRadius: 3,
                     transition: 'width 0.4s ease',

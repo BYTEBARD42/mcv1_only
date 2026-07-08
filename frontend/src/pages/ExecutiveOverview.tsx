@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend, ReferenceLine, ResponsiveContainer, Brush
 } from 'recharts'
-import { COUNTRIES, COUNTRY_COLORS, getCombinedChartData, FORECAST_BASELINE, FORECAST_YEARS, BACKTEST } from '../data'
+import { COUNTRIES, COUNTRY_COLORS, getCombinedChartData, FORECAST_BASELINE, FORECAST_YEARS, BACKTEST, getOverviewKPIs } from '../data'
 
 function KpiCard({ label, value, sub, subColor, icon, accentColor }: {
-  label: string; value: string; sub: string; subColor: string; icon: JSX.Element; accentColor: string
+  label: string; value: string; sub: string; subColor: string; icon: React.ReactNode; accentColor: string
 }) {
   return (
     <div className="glass" style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
@@ -77,21 +77,23 @@ export default function ExecutiveOverview() {
     return { country: c, values: vals, sparkData: vals }
   })
 
+  const { totalBirths2025, forecast2025, forecast2030, pctChange } = getOverviewKPIs()
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Row 1: KPI cards */}
       <div style={{ display: 'flex', gap: 14 }}>
         <KpiCard
           label="Total Births (2025)"
-          value="1,920,739"
-          sub="↑ +2.1% vs 2024"
+          value={totalBirths2025.toLocaleString('en-US')}
+          sub="Projected sum"
           subColor="var(--green)"
           accentColor="var(--green)"
           icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>}
         />
         <KpiCard
           label="MCV2 Forecast (2025)"
-          value="1,085,910"
+          value={forecast2025.toLocaleString('en-US', { maximumFractionDigits: 0 })}
           sub="● Baseline projection"
           subColor="var(--blue)"
           accentColor="var(--blue)"
@@ -99,7 +101,7 @@ export default function ExecutiveOverview() {
         />
         <KpiCard
           label="MCV2 Forecast (2030)"
-          value="974,136"
+          value={forecast2030.toLocaleString('en-US', { maximumFractionDigits: 0 })}
           sub="● End-period projection"
           subColor="var(--orange)"
           accentColor="var(--orange)"
@@ -107,10 +109,10 @@ export default function ExecutiveOverview() {
         />
         <KpiCard
           label="5-Year Change"
-          value="-10.3%"
-          sub="↓ Declining trend by 2030"
-          subColor="var(--red)"
-          accentColor="var(--red)"
+          value={`${pctChange > 0 ? '+' : ''}${pctChange.toFixed(1)}%`}
+          sub={pctChange > 0 ? '↑ Growth by 2030' : '↓ Declining trend by 2030'}
+          subColor={pctChange > 0 ? 'var(--green)' : 'var(--red)'}
+          accentColor={pctChange > 0 ? 'var(--green)' : 'var(--red)'}
           icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>}
         />
       </div>
@@ -156,7 +158,7 @@ export default function ExecutiveOverview() {
             <Tooltip
               contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
               labelStyle={{ color: 'var(--text-primary)', fontWeight: 600 }}
-              formatter={(v: number, name: string) => [`${v?.toFixed(1)}K`, name]}
+              formatter={(v: any, name: any) => [`${v?.toFixed(1)}K`, name]}
             />
             <Legend
               wrapperStyle={{ fontSize: 12, paddingTop: 12 }}

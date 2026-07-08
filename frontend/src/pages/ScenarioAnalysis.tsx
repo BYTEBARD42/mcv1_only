@@ -1,8 +1,8 @@
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ReferenceLine, Legend, ResponsiveContainer,
+  ReferenceLine, ResponsiveContainer,
 } from 'recharts'
-import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, getScenarios, type Country } from '../data'
+import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, getScenarios, getHistoricalSeries, type Country } from '../data'
 
 const SCENARIOS = [
   { key: 'baseline', label: 'BASELINE', color: '#3498db', desc: 'UN medium-variant projections, no adjustments' },
@@ -12,15 +12,14 @@ const SCENARIOS = [
 ]
 
 const FORECAST_YEARS = [2025, 2026, 2027, 2028, 2029, 2030]
-const HIST_YEARS = [2020, 2021, 2022, 2023, 2024]
 
 function buildScenarioChart(country: Country) {
   const scenarios = getScenarios(country)
-  const base2024 = scenarios.baseline[0] * 0.96
+  const histSeries = getHistoricalSeries(country).filter(d => d.year >= 2020 && d.year <= 2024)
 
-  const histPts = HIST_YEARS.map((y, i) => ({
-    year: y,
-    hist: +(base2024 * (0.92 + i * 0.02)).toFixed(1),
+  const histPts = histSeries.map((d: any) => ({
+    year: d.year,
+    hist: d.value,
     baseline: null as number | null,
     optimistic: null as number | null,
     pessimistic: null as number | null,
@@ -57,7 +56,7 @@ function ScenarioChart({ country }: { country: Country }) {
           <YAxis stroke="none" tick={{ fill: 'var(--text-secondary)', fontSize: 10 }} tickLine={false} tickFormatter={v => `${v?.toFixed(0)}K`} />
           <Tooltip
             contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }}
-            formatter={(v: number, name: string) => [`${v?.toFixed(1)}K`, name.charAt(0).toUpperCase() + name.slice(1)]}
+            formatter={(v: any, name: any) => [`${v?.toFixed(1)}K`, name.charAt(0).toUpperCase() + name.slice(1)]}
           />
           <ReferenceLine x={2024} stroke="rgba(255,255,255,0.15)" strokeDasharray="4 4" />
           <Line dataKey="hist" name="Historical" stroke="var(--gray-line)" strokeWidth={2} dot={false} connectNulls />

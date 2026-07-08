@@ -1,16 +1,15 @@
 import {
   ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer, ReferenceLine,
+  Tooltip, ResponsiveContainer, ReferenceLine,
 } from 'recharts'
-import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, MC_DATA, type Country } from '../data'
+import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, MC_DATA, getHistoricalSeries, type Country } from '../data'
 
-const HIST_YEARS = [2018, 2019, 2020, 2021, 2022, 2023, 2024]
 
 function buildFanData(country: Country) {
-  const baseVal = MC_DATA[country][0].p50 * 0.96
-  const histPts = HIST_YEARS.map((y, i) => ({
-    year: y,
-    hist: +(baseVal * (0.88 + i * 0.02)).toFixed(1),
+  const histSeries = getHistoricalSeries(country).filter(d => d.year >= 2018 && d.year <= 2024)
+  const histPts = histSeries.map((d: any) => ({
+    year: d.year,
+    hist: d.value,
     p5: null as number | null, p25: null as number | null,
     p50: null as number | null, p75: null as number | null, p95: null as number | null,
     band90: null as [number, number] | null,
@@ -53,7 +52,7 @@ function FanChart({ country }: { country: Country }) {
           <YAxis stroke="none" tick={{ fill: 'var(--text-secondary)', fontSize: 10 }} tickLine={false} tickFormatter={v => `${v?.toFixed(0)}K`} />
           <Tooltip
             contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }}
-            formatter={(v: number | null, name: string) => v !== null ? [`${v?.toFixed(1)}K`, name] : [null, name]}
+            formatter={(v: any, name: any) => v !== null ? [`${v?.toFixed(1)}K`, name] : [null, name]}
           />
           <ReferenceLine x={2024} stroke="rgba(255,255,255,0.15)" strokeDasharray="4 4" />
 
