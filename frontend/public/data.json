@@ -1,4 +1,27 @@
 {
+  "meta": {
+    "horizon": [
+      2025,
+      2030
+    ],
+    "modelMAPE": 2.68,
+    "modelMAE": 5.28,
+    "backtestMAPE": {
+      "Kyrgyzstan": 1.01,
+      "Lesotho": 6.18,
+      "Uzbekistan": 0.86
+    },
+    "targetSemantics": "MCV1_TARGET = annual MCV1 doses (thousands), incl. 25% wastage"
+  },
+  "costConfig": {
+    "pricePerDose": 0.318,
+    "presentation": "10-dose",
+    "currency": "USD",
+    "bakedInWastage": 0.25,
+    "defaultWastage": 0.25,
+    "source": "Gavi/UNICEF 10-dose measles vaccine price (US$0.318/dose)",
+    "note": "Target already includes 25% wastage. children_covered = target*0.75; doses(w) = children_covered/(1-w); cost = doses*1000*pricePerDose."
+  },
   "countries": [
     "Kyrgyzstan",
     "Lesotho",
@@ -338,109 +361,1771 @@
       1163.709
     ]
   },
+  "popAge0": {
+    "Kyrgyzstan": [
+      {
+        "year": 1992,
+        "popAge0": 134.13
+      },
+      {
+        "year": 1993,
+        "popAge0": 129.736
+      },
+      {
+        "year": 1994,
+        "popAge0": 122.691
+      },
+      {
+        "year": 1995,
+        "popAge0": 121.053
+      },
+      {
+        "year": 1996,
+        "popAge0": 120.788
+      },
+      {
+        "year": 1997,
+        "popAge0": 116.239
+      },
+      {
+        "year": 1998,
+        "popAge0": 111.168
+      },
+      {
+        "year": 1999,
+        "popAge0": 110.058
+      },
+      {
+        "year": 2000,
+        "popAge0": 109.698
+      },
+      {
+        "year": 2001,
+        "popAge0": 107.861
+      },
+      {
+        "year": 2002,
+        "popAge0": 108.661
+      },
+      {
+        "year": 2003,
+        "popAge0": 110.674
+      },
+      {
+        "year": 2004,
+        "popAge0": 113.256
+      },
+      {
+        "year": 2005,
+        "popAge0": 115.862
+      },
+      {
+        "year": 2006,
+        "popAge0": 118.688
+      },
+      {
+        "year": 2007,
+        "popAge0": 122.824
+      },
+      {
+        "year": 2008,
+        "popAge0": 122.915
+      },
+      {
+        "year": 2009,
+        "popAge0": 128.506
+      },
+      {
+        "year": 2010,
+        "popAge0": 141.845
+      },
+      {
+        "year": 2011,
+        "popAge0": 149.422
+      },
+      {
+        "year": 2012,
+        "popAge0": 152.679
+      },
+      {
+        "year": 2013,
+        "popAge0": 152.167
+      },
+      {
+        "year": 2014,
+        "popAge0": 151.705
+      },
+      {
+        "year": 2015,
+        "popAge0": 152.25
+      },
+      {
+        "year": 2016,
+        "popAge0": 149.63
+      },
+      {
+        "year": 2017,
+        "popAge0": 147.499
+      },
+      {
+        "year": 2018,
+        "popAge0": 156.079
+      },
+      {
+        "year": 2019,
+        "popAge0": 167.568
+      },
+      {
+        "year": 2020,
+        "popAge0": 166.617
+      },
+      {
+        "year": 2021,
+        "popAge0": 157.402
+      },
+      {
+        "year": 2022,
+        "popAge0": 150.281
+      },
+      {
+        "year": 2023,
+        "popAge0": 148.749
+      },
+      {
+        "year": 2024,
+        "popAge0": 148.893
+      },
+      {
+        "year": 2025,
+        "popAge0": 148.413
+      },
+      {
+        "year": 2026,
+        "popAge0": 147.595
+      },
+      {
+        "year": 2027,
+        "popAge0": 147.029
+      },
+      {
+        "year": 2028,
+        "popAge0": 146.837
+      },
+      {
+        "year": 2029,
+        "popAge0": 147.054
+      },
+      {
+        "year": 2030,
+        "popAge0": 147.689
+      }
+    ],
+    "Lesotho": [
+      {
+        "year": 1980,
+        "popAge0": 52.492
+      },
+      {
+        "year": 1981,
+        "popAge0": 53.617
+      },
+      {
+        "year": 1982,
+        "popAge0": 54.719
+      },
+      {
+        "year": 1983,
+        "popAge0": 55.782
+      },
+      {
+        "year": 1984,
+        "popAge0": 56.784
+      },
+      {
+        "year": 1985,
+        "popAge0": 57.783
+      },
+      {
+        "year": 1986,
+        "popAge0": 59.008
+      },
+      {
+        "year": 1987,
+        "popAge0": 60.776
+      },
+      {
+        "year": 1988,
+        "popAge0": 61.716
+      },
+      {
+        "year": 1989,
+        "popAge0": 61.331
+      },
+      {
+        "year": 1990,
+        "popAge0": 60.672
+      },
+      {
+        "year": 1991,
+        "popAge0": 60.002
+      },
+      {
+        "year": 1992,
+        "popAge0": 59.298
+      },
+      {
+        "year": 1993,
+        "popAge0": 58.203
+      },
+      {
+        "year": 1994,
+        "popAge0": 57.036
+      },
+      {
+        "year": 1995,
+        "popAge0": 56.432
+      },
+      {
+        "year": 1996,
+        "popAge0": 56.413
+      },
+      {
+        "year": 1997,
+        "popAge0": 56.506
+      },
+      {
+        "year": 1998,
+        "popAge0": 55.669
+      },
+      {
+        "year": 1999,
+        "popAge0": 54.117
+      },
+      {
+        "year": 2000,
+        "popAge0": 53.172
+      },
+      {
+        "year": 2001,
+        "popAge0": 53.306
+      },
+      {
+        "year": 2002,
+        "popAge0": 54.159
+      },
+      {
+        "year": 2003,
+        "popAge0": 54.423
+      },
+      {
+        "year": 2004,
+        "popAge0": 53.468
+      },
+      {
+        "year": 2005,
+        "popAge0": 52.325
+      },
+      {
+        "year": 2006,
+        "popAge0": 52.062
+      },
+      {
+        "year": 2007,
+        "popAge0": 53.197
+      },
+      {
+        "year": 2008,
+        "popAge0": 54.57
+      },
+      {
+        "year": 2009,
+        "popAge0": 54.958
+      },
+      {
+        "year": 2010,
+        "popAge0": 55.058
+      },
+      {
+        "year": 2011,
+        "popAge0": 56.449
+      },
+      {
+        "year": 2012,
+        "popAge0": 57.887
+      },
+      {
+        "year": 2013,
+        "popAge0": 58.339
+      },
+      {
+        "year": 2014,
+        "popAge0": 58.516
+      },
+      {
+        "year": 2015,
+        "popAge0": 58.424
+      },
+      {
+        "year": 2016,
+        "popAge0": 58.587
+      },
+      {
+        "year": 2017,
+        "popAge0": 58.384
+      },
+      {
+        "year": 2018,
+        "popAge0": 57.505
+      },
+      {
+        "year": 2019,
+        "popAge0": 56.334
+      },
+      {
+        "year": 2020,
+        "popAge0": 55.205
+      },
+      {
+        "year": 2021,
+        "popAge0": 54.245
+      },
+      {
+        "year": 2022,
+        "popAge0": 53.523
+      },
+      {
+        "year": 2023,
+        "popAge0": 53.261
+      },
+      {
+        "year": 2024,
+        "popAge0": 53.185
+      },
+      {
+        "year": 2025,
+        "popAge0": 53.077
+      },
+      {
+        "year": 2026,
+        "popAge0": 53.022
+      },
+      {
+        "year": 2027,
+        "popAge0": 52.951
+      },
+      {
+        "year": 2028,
+        "popAge0": 52.898
+      },
+      {
+        "year": 2029,
+        "popAge0": 52.907
+      },
+      {
+        "year": 2030,
+        "popAge0": 52.952
+      }
+    ],
+    "Uzbekistan": [
+      {
+        "year": 1992,
+        "popAge0": 680.564
+      },
+      {
+        "year": 1993,
+        "popAge0": 671.014
+      },
+      {
+        "year": 1994,
+        "popAge0": 652.918
+      },
+      {
+        "year": 1995,
+        "popAge0": 639.873
+      },
+      {
+        "year": 1996,
+        "popAge0": 626.676
+      },
+      {
+        "year": 1997,
+        "popAge0": 602.072
+      },
+      {
+        "year": 1998,
+        "popAge0": 572.331
+      },
+      {
+        "year": 1999,
+        "popAge0": 546.162
+      },
+      {
+        "year": 2000,
+        "popAge0": 526.468
+      },
+      {
+        "year": 2001,
+        "popAge0": 513.303
+      },
+      {
+        "year": 2002,
+        "popAge0": 510.315
+      },
+      {
+        "year": 2003,
+        "popAge0": 509.57
+      },
+      {
+        "year": 2004,
+        "popAge0": 513.102
+      },
+      {
+        "year": 2005,
+        "popAge0": 519.698
+      },
+      {
+        "year": 2006,
+        "popAge0": 531.481
+      },
+      {
+        "year": 2007,
+        "popAge0": 563.718
+      },
+      {
+        "year": 2008,
+        "popAge0": 602.836
+      },
+      {
+        "year": 2009,
+        "popAge0": 625.743
+      },
+      {
+        "year": 2010,
+        "popAge0": 627.13
+      },
+      {
+        "year": 2011,
+        "popAge0": 621.026
+      },
+      {
+        "year": 2012,
+        "popAge0": 624.605
+      },
+      {
+        "year": 2013,
+        "popAge0": 650.703
+      },
+      {
+        "year": 2014,
+        "popAge0": 690.028
+      },
+      {
+        "year": 2015,
+        "popAge0": 717.571
+      },
+      {
+        "year": 2016,
+        "popAge0": 725.762
+      },
+      {
+        "year": 2017,
+        "popAge0": 726.811
+      },
+      {
+        "year": 2018,
+        "popAge0": 747.989
+      },
+      {
+        "year": 2019,
+        "popAge0": 786.56
+      },
+      {
+        "year": 2020,
+        "popAge0": 828.506
+      },
+      {
+        "year": 2021,
+        "popAge0": 873.893
+      },
+      {
+        "year": 2022,
+        "popAge0": 906.952
+      },
+      {
+        "year": 2023,
+        "popAge0": 925.942
+      },
+      {
+        "year": 2024,
+        "popAge0": 926.726
+      },
+      {
+        "year": 2025,
+        "popAge0": 910.374
+      },
+      {
+        "year": 2026,
+        "popAge0": 893.396
+      },
+      {
+        "year": 2027,
+        "popAge0": 879.137
+      },
+      {
+        "year": 2028,
+        "popAge0": 868.408
+      },
+      {
+        "year": 2029,
+        "popAge0": 860.252
+      },
+      {
+        "year": 2030,
+        "popAge0": 854.215
+      }
+    ]
+  },
   "demographics": {
     "Kyrgyzstan": {
       "totalPopulation": 7241424,
       "births2025": 149483,
+      "popAge0_2025": 148.4,
       "crudeBirthRate": 20.49,
       "infantMortalityRate": 11.71,
       "under5Mortality": 14.14,
-      "netMigration": 1815,
-      "ageDistribution2025": [
-        {
-          "age": "Age 0",
-          "value": 148.4
-        },
-        {
-          "age": "Age 1",
-          "value": 146.9
-        },
-        {
-          "age": "Age 2",
-          "value": 145.4
-        },
-        {
-          "age": "Age 3",
-          "value": 144.0
-        },
-        {
-          "age": "Age 4",
-          "value": 142.5
-        },
-        {
-          "age": "Age 5",
-          "value": 141.0
-        }
-      ]
+      "netMigration": 1815
     },
     "Lesotho": {
       "totalPopulation": 2350397,
       "births2025": 55434,
+      "popAge0_2025": 53.1,
       "crudeBirthRate": 23.46,
       "infantMortalityRate": 52.92,
       "under5Mortality": 67.19,
-      "netMigration": -5192,
-      "ageDistribution2025": [
-        {
-          "age": "Age 0",
-          "value": 53.1
-        },
-        {
-          "age": "Age 1",
-          "value": 52.5
-        },
-        {
-          "age": "Age 2",
-          "value": 52.0
-        },
-        {
-          "age": "Age 3",
-          "value": 51.5
-        },
-        {
-          "age": "Age 4",
-          "value": 51.0
-        },
-        {
-          "age": "Age 5",
-          "value": 50.4
-        }
-      ]
+      "netMigration": -5192
     },
     "Uzbekistan": {
       "totalPopulation": 36713264,
       "births2025": 911213,
+      "popAge0_2025": 910.4,
       "crudeBirthRate": 24.59,
       "infantMortalityRate": 11.88,
       "under5Mortality": 14.38,
-      "netMigration": -6987,
-      "ageDistribution2025": [
-        {
-          "age": "Age 0",
-          "value": 910.4
-        },
-        {
-          "age": "Age 1",
-          "value": 901.3
-        },
-        {
-          "age": "Age 2",
-          "value": 892.2
-        },
-        {
-          "age": "Age 3",
-          "value": 883.1
-        },
-        {
-          "age": "Age 4",
-          "value": 874.0
-        },
-        {
-          "age": "Age 5",
-          "value": 864.9
-        }
-      ]
+      "netMigration": -6987
     }
+  },
+  "demographicTrends": {
+    "Kyrgyzstan": [
+      {
+        "year": 1992,
+        "pop": 4600310,
+        "births": 139610,
+        "br": 30.35,
+        "imr": 51.13,
+        "u5": 64.27,
+        "mig": -33009
+      },
+      {
+        "year": 1993,
+        "pop": 4626803,
+        "births": 132994,
+        "br": 28.74,
+        "imr": 50.62,
+        "u5": 63.54,
+        "mig": -103698
+      },
+      {
+        "year": 1994,
+        "pop": 4649185,
+        "births": 124509,
+        "br": 26.78,
+        "imr": 49.99,
+        "u5": 62.81,
+        "mig": -22165
+      },
+      {
+        "year": 1995,
+        "pop": 4713635,
+        "births": 125889,
+        "br": 26.71,
+        "imr": 48.83,
+        "u5": 61.12,
+        "mig": -10767
+      },
+      {
+        "year": 1996,
+        "pop": 4782882,
+        "births": 121676,
+        "br": 25.44,
+        "imr": 47.38,
+        "u5": 59.16,
+        "mig": -10926
+      },
+      {
+        "year": 1997,
+        "pop": 4847993,
+        "births": 116217,
+        "br": 23.97,
+        "imr": 45.65,
+        "u5": 56.86,
+        "mig": -11740
+      },
+      {
+        "year": 1998,
+        "pop": 4907791,
+        "births": 115794,
+        "br": 23.59,
+        "imr": 43.74,
+        "u5": 54.29,
+        "mig": -17690
+      },
+      {
+        "year": 1999,
+        "pop": 4968587,
+        "births": 115627,
+        "br": 23.27,
+        "imr": 41.8,
+        "u5": 51.73,
+        "mig": -10297
+      },
+      {
+        "year": 2000,
+        "pop": 5025145,
+        "births": 111842,
+        "br": 22.26,
+        "imr": 40.03,
+        "u5": 49.52,
+        "mig": -23265
+      },
+      {
+        "year": 2001,
+        "pop": 5071956,
+        "births": 111634,
+        "br": 22.01,
+        "imr": 38.16,
+        "u5": 46.95,
+        "mig": -25695
+      },
+      {
+        "year": 2002,
+        "pop": 5116254,
+        "births": 113278,
+        "br": 22.14,
+        "imr": 36.5,
+        "u5": 44.8,
+        "mig": -28300
+      },
+      {
+        "year": 2003,
+        "pop": 5159422,
+        "births": 115587,
+        "br": 22.4,
+        "imr": 34.98,
+        "u5": 42.87,
+        "mig": -30686
+      },
+      {
+        "year": 2004,
+        "pop": 5203041,
+        "births": 118393,
+        "br": 22.75,
+        "imr": 33.52,
+        "u5": 41.0,
+        "mig": -32088
+      },
+      {
+        "year": 2005,
+        "pop": 5246332,
+        "births": 120767,
+        "br": 23.02,
+        "imr": 32.08,
+        "u5": 39.11,
+        "mig": -36288
+      },
+      {
+        "year": 2006,
+        "pop": 5282453,
+        "births": 126666,
+        "br": 23.98,
+        "imr": 30.63,
+        "u5": 37.28,
+        "mig": -53469
+      },
+      {
+        "year": 2007,
+        "pop": 5313368,
+        "births": 129303,
+        "br": 24.34,
+        "imr": 29.14,
+        "u5": 35.38,
+        "mig": -54298
+      },
+      {
+        "year": 2008,
+        "pop": 5342520,
+        "births": 132930,
+        "br": 24.88,
+        "imr": 27.66,
+        "u5": 33.55,
+        "mig": -64404
+      },
+      {
+        "year": 2009,
+        "pop": 5398007,
+        "births": 139854,
+        "br": 25.91,
+        "imr": 26.09,
+        "u5": 31.52,
+        "mig": -14325
+      },
+      {
+        "year": 2010,
+        "pop": 5491761,
+        "births": 150123,
+        "br": 27.34,
+        "imr": 24.61,
+        "u5": 29.71,
+        "mig": -6521
+      },
+      {
+        "year": 2011,
+        "pop": 5594535,
+        "births": 154364,
+        "br": 27.59,
+        "imr": 23.17,
+        "u5": 27.89,
+        "mig": -10170
+      },
+      {
+        "year": 2012,
+        "pop": 5696519,
+        "births": 156164,
+        "br": 27.41,
+        "imr": 21.87,
+        "u5": 26.27,
+        "mig": -12503
+      },
+      {
+        "year": 2013,
+        "pop": 5797289,
+        "births": 153027,
+        "br": 26.4,
+        "imr": 20.68,
+        "u5": 24.8,
+        "mig": -9667
+      },
+      {
+        "year": 2014,
+        "pop": 5898319,
+        "births": 155058,
+        "br": 26.29,
+        "imr": 19.59,
+        "u5": 23.47,
+        "mig": -9443
+      },
+      {
+        "year": 2015,
+        "pop": 6001882,
+        "births": 154056,
+        "br": 25.67,
+        "imr": 18.59,
+        "u5": 22.25,
+        "mig": -5071
+      },
+      {
+        "year": 2016,
+        "pop": 6108462,
+        "births": 149936,
+        "br": 24.55,
+        "imr": 17.69,
+        "u5": 21.14,
+        "mig": 1187
+      },
+      {
+        "year": 2017,
+        "pop": 6220150,
+        "births": 150046,
+        "br": 24.12,
+        "imr": 16.86,
+        "u5": 20.16,
+        "mig": 7553
+      },
+      {
+        "year": 2018,
+        "pop": 6341732,
+        "births": 167235,
+        "br": 26.37,
+        "imr": 16.19,
+        "u5": 19.32,
+        "mig": 3494
+      },
+      {
+        "year": 2019,
+        "pop": 6494035,
+        "births": 172605,
+        "br": 26.58,
+        "imr": 15.63,
+        "u5": 18.65,
+        "mig": 47303
+      },
+      {
+        "year": 2020,
+        "pop": 6664140,
+        "births": 160005,
+        "br": 24.01,
+        "imr": 15.19,
+        "u5": 18.24,
+        "mig": 54704
+      },
+      {
+        "year": 2021,
+        "pop": 6820479,
+        "births": 153197,
+        "br": 22.46,
+        "imr": 14.84,
+        "u5": 17.85,
+        "mig": 46208
+      },
+      {
+        "year": 2022,
+        "pop": 6955788,
+        "births": 150267,
+        "br": 21.6,
+        "imr": 14.55,
+        "u5": 17.52,
+        "mig": 12596
+      },
+      {
+        "year": 2023,
+        "pop": 7073516,
+        "births": 150759,
+        "br": 21.31,
+        "imr": 14.26,
+        "u5": 16.99,
+        "mig": 5601
+      },
+      {
+        "year": 2024,
+        "pop": 7186009,
+        "births": 150335,
+        "br": 20.92,
+        "imr": 12.11,
+        "u5": 14.61,
+        "mig": 3645
+      }
+    ],
+    "Lesotho": [
+      {
+        "year": 1980,
+        "pop": 1406521,
+        "births": 56801,
+        "br": 40.38,
+        "imr": 92.85,
+        "u5": 123.46,
+        "mig": 1361
+      },
+      {
+        "year": 1981,
+        "pop": 1448069,
+        "births": 57809,
+        "br": 39.92,
+        "imr": 89.03,
+        "u5": 117.6,
+        "mig": 1307
+      },
+      {
+        "year": 1982,
+        "pop": 1490732,
+        "births": 58829,
+        "br": 39.46,
+        "imr": 85.4,
+        "u5": 112.13,
+        "mig": 1281
+      },
+      {
+        "year": 1983,
+        "pop": 1534413,
+        "births": 59762,
+        "br": 38.95,
+        "imr": 82.02,
+        "u5": 107.08,
+        "mig": 1253
+      },
+      {
+        "year": 1984,
+        "pop": 1578986,
+        "births": 60664,
+        "br": 38.42,
+        "imr": 78.93,
+        "u5": 102.52,
+        "mig": 1199
+      },
+      {
+        "year": 1985,
+        "pop": 1624379,
+        "births": 61614,
+        "br": 37.93,
+        "imr": 76.09,
+        "u5": 98.42,
+        "mig": 1222
+      },
+      {
+        "year": 1986,
+        "pop": 1666138,
+        "births": 62528,
+        "br": 37.53,
+        "imr": 73.58,
+        "u5": 94.82,
+        "mig": -7501
+      },
+      {
+        "year": 1987,
+        "pop": 1703390,
+        "births": 65296,
+        "br": 38.33,
+        "imr": 71.55,
+        "u5": 91.87,
+        "mig": -10946
+      },
+      {
+        "year": 1988,
+        "pop": 1739841,
+        "births": 65007,
+        "br": 37.36,
+        "imr": 69.75,
+        "u5": 89.32,
+        "mig": -11028
+      },
+      {
+        "year": 1989,
+        "pop": 1775436,
+        "births": 64400,
+        "br": 36.27,
+        "imr": 68.51,
+        "u5": 87.46,
+        "mig": -11207
+      },
+      {
+        "year": 1990,
+        "pop": 1809696,
+        "births": 63575,
+        "br": 35.13,
+        "imr": 67.93,
+        "u5": 86.8,
+        "mig": -11598
+      },
+      {
+        "year": 1991,
+        "pop": 1842379,
+        "births": 62988,
+        "br": 34.19,
+        "imr": 67.75,
+        "u5": 86.42,
+        "mig": -12114
+      },
+      {
+        "year": 1992,
+        "pop": 1873274,
+        "births": 62133,
+        "br": 33.17,
+        "imr": 68.33,
+        "u5": 87.25,
+        "mig": -12707
+      },
+      {
+        "year": 1993,
+        "pop": 1901793,
+        "births": 60762,
+        "br": 31.95,
+        "imr": 69.56,
+        "u5": 89.03,
+        "mig": -13347
+      },
+      {
+        "year": 1994,
+        "pop": 1927707,
+        "births": 59788,
+        "br": 31.02,
+        "imr": 71.32,
+        "u5": 91.48,
+        "mig": -13953
+      },
+      {
+        "year": 1995,
+        "pop": 1951437,
+        "births": 59643,
+        "br": 30.56,
+        "imr": 73.47,
+        "u5": 94.62,
+        "mig": -14588
+      },
+      {
+        "year": 1996,
+        "pop": 1972418,
+        "births": 59988,
+        "br": 30.41,
+        "imr": 75.82,
+        "u5": 97.91,
+        "mig": -17042
+      },
+      {
+        "year": 1997,
+        "pop": 1988130,
+        "births": 60089,
+        "br": 30.22,
+        "imr": 78.14,
+        "u5": 101.27,
+        "mig": -22396
+      },
+      {
+        "year": 1998,
+        "pop": 1998049,
+        "births": 58418,
+        "br": 29.24,
+        "imr": 80.24,
+        "u5": 104.3,
+        "mig": -23299
+      },
+      {
+        "year": 1999,
+        "pop": 2003234,
+        "births": 57007,
+        "br": 28.46,
+        "imr": 82.16,
+        "u5": 107.38,
+        "mig": -24610
+      },
+      {
+        "year": 2000,
+        "pop": 2003913,
+        "births": 56606,
+        "br": 28.25,
+        "imr": 83.68,
+        "u5": 109.62,
+        "mig": -26220
+      },
+      {
+        "year": 2001,
+        "pop": 2000853,
+        "births": 57456,
+        "br": 28.72,
+        "imr": 84.93,
+        "u5": 111.43,
+        "mig": -27874
+      },
+      {
+        "year": 2002,
+        "pop": 1994679,
+        "births": 58573,
+        "br": 29.36,
+        "imr": 85.98,
+        "u5": 112.97,
+        "mig": -29924
+      },
+      {
+        "year": 2003,
+        "pop": 1985059,
+        "births": 58151,
+        "br": 29.29,
+        "imr": 86.69,
+        "u5": 114.06,
+        "mig": -31723
+      },
+      {
+        "year": 2004,
+        "pop": 1971129,
+        "births": 56642,
+        "br": 28.74,
+        "imr": 87.03,
+        "u5": 114.58,
+        "mig": -33530
+      },
+      {
+        "year": 2005,
+        "pop": 1953076,
+        "births": 55781,
+        "br": 28.56,
+        "imr": 86.71,
+        "u5": 114.11,
+        "mig": -35679
+      },
+      {
+        "year": 2006,
+        "pop": 1945063,
+        "births": 55681,
+        "br": 28.63,
+        "imr": 85.5,
+        "u5": 112.32,
+        "mig": -11416
+      },
+      {
+        "year": 2007,
+        "pop": 1953268,
+        "births": 57589,
+        "br": 29.48,
+        "imr": 83.35,
+        "u5": 109.0,
+        "mig": -5179
+      },
+      {
+        "year": 2008,
+        "pop": 1966541,
+        "births": 58292,
+        "br": 29.64,
+        "imr": 80.47,
+        "u5": 104.82,
+        "mig": -5392
+      },
+      {
+        "year": 2009,
+        "pop": 1980883,
+        "births": 58148,
+        "br": 29.35,
+        "imr": 77.0,
+        "u5": 99.86,
+        "mig": -5599
+      },
+      {
+        "year": 2010,
+        "pop": 1996251,
+        "births": 58218,
+        "br": 29.16,
+        "imr": 73.52,
+        "u5": 94.95,
+        "mig": -5886
+      },
+      {
+        "year": 2011,
+        "pop": 2014009,
+        "births": 60840,
+        "br": 30.21,
+        "imr": 70.69,
+        "u5": 91.1,
+        "mig": -6118
+      },
+      {
+        "year": 2012,
+        "pop": 2034354,
+        "births": 61085,
+        "br": 30.03,
+        "imr": 68.15,
+        "u5": 87.54,
+        "mig": -6425
+      },
+      {
+        "year": 2013,
+        "pop": 2056504,
+        "births": 61671,
+        "br": 29.99,
+        "imr": 66.22,
+        "u5": 84.74,
+        "mig": -6659
+      },
+      {
+        "year": 2014,
+        "pop": 2080089,
+        "births": 61362,
+        "br": 29.5,
+        "imr": 64.81,
+        "u5": 82.7,
+        "mig": -6877
+      },
+      {
+        "year": 2015,
+        "pop": 2104611,
+        "births": 61408,
+        "br": 29.18,
+        "imr": 63.71,
+        "u5": 81.19,
+        "mig": -7087
+      },
+      {
+        "year": 2016,
+        "pop": 2130422,
+        "births": 61638,
+        "br": 28.93,
+        "imr": 62.71,
+        "u5": 79.7,
+        "mig": -6766
+      },
+      {
+        "year": 2017,
+        "pop": 2157110,
+        "births": 60920,
+        "br": 28.24,
+        "imr": 61.84,
+        "u5": 78.48,
+        "mig": -6850
+      },
+      {
+        "year": 2018,
+        "pop": 2183603,
+        "births": 59745,
+        "br": 27.36,
+        "imr": 61.07,
+        "u5": 77.53,
+        "mig": -6892
+      },
+      {
+        "year": 2019,
+        "pop": 2209405,
+        "births": 58417,
+        "br": 26.44,
+        "imr": 60.3,
+        "u5": 76.54,
+        "mig": -6896
+      },
+      {
+        "year": 2020,
+        "pop": 2235727,
+        "births": 57297,
+        "br": 25.63,
+        "imr": 59.93,
+        "u5": 76.31,
+        "mig": -3449
+      },
+      {
+        "year": 2021,
+        "pop": 2261542,
+        "births": 56302,
+        "br": 24.9,
+        "imr": 58.5,
+        "u5": 74.12,
+        "mig": -3449
+      },
+      {
+        "year": 2022,
+        "pop": 2286110,
+        "births": 55764,
+        "br": 24.39,
+        "imr": 57.5,
+        "u5": 72.89,
+        "mig": -6023
+      },
+      {
+        "year": 2023,
+        "pop": 2311472,
+        "births": 55728,
+        "br": 24.11,
+        "imr": 56.51,
+        "u5": 71.64,
+        "mig": -5168
+      },
+      {
+        "year": 2024,
+        "pop": 2337423,
+        "births": 55542,
+        "br": 23.76,
+        "imr": 54.61,
+        "u5": 69.25,
+        "mig": -5107
+      }
+    ],
+    "Uzbekistan": [
+      {
+        "year": 1992,
+        "pop": 21485090,
+        "births": 708970,
+        "br": 33.0,
+        "imr": 54.75,
+        "u5": 70.14,
+        "mig": -33259
+      },
+      {
+        "year": 1993,
+        "pop": 21987955,
+        "births": 692561,
+        "br": 31.5,
+        "imr": 54.43,
+        "u5": 69.69,
+        "mig": -37377
+      },
+      {
+        "year": 1994,
+        "pop": 22463291,
+        "births": 671086,
+        "br": 29.88,
+        "imr": 54.09,
+        "u5": 69.21,
+        "mig": -41788
+      },
+      {
+        "year": 1995,
+        "pop": 22917589,
+        "births": 665170,
+        "br": 29.02,
+        "imr": 53.62,
+        "u5": 68.56,
+        "mig": -45876
+      },
+      {
+        "year": 1996,
+        "pop": 23351981,
+        "births": 643273,
+        "br": 27.55,
+        "imr": 52.97,
+        "u5": 67.66,
+        "mig": -50314
+      },
+      {
+        "year": 1997,
+        "pop": 23758960,
+        "births": 613334,
+        "br": 25.82,
+        "imr": 52.1,
+        "u5": 66.44,
+        "mig": -48360
+      },
+      {
+        "year": 1998,
+        "pop": 24134929,
+        "births": 580560,
+        "br": 24.05,
+        "imr": 50.97,
+        "u5": 64.88,
+        "mig": -49862
+      },
+      {
+        "year": 1999,
+        "pop": 24476008,
+        "births": 558166,
+        "br": 22.8,
+        "imr": 49.56,
+        "u5": 62.93,
+        "mig": -61955
+      },
+      {
+        "year": 2000,
+        "pop": 24787054,
+        "births": 538800,
+        "br": 21.74,
+        "imr": 47.9,
+        "u5": 60.65,
+        "mig": -66547
+      },
+      {
+        "year": 2001,
+        "pop": 25090283,
+        "births": 529342,
+        "br": 21.1,
+        "imr": 45.95,
+        "u5": 57.99,
+        "mig": -48642
+      },
+      {
+        "year": 2002,
+        "pop": 25399980,
+        "births": 530875,
+        "br": 20.9,
+        "imr": 43.81,
+        "u5": 55.08,
+        "mig": -47679
+      },
+      {
+        "year": 2003,
+        "pop": 25711259,
+        "births": 526166,
+        "br": 20.46,
+        "imr": 41.51,
+        "u5": 51.98,
+        "mig": -44092
+      },
+      {
+        "year": 2004,
+        "pop": 26029350,
+        "births": 536325,
+        "br": 20.61,
+        "imr": 39.08,
+        "u5": 48.75,
+        "mig": -38834
+      },
+      {
+        "year": 2005,
+        "pop": 26356975,
+        "births": 537796,
+        "br": 20.4,
+        "imr": 36.6,
+        "u5": 45.46,
+        "mig": -33386
+      },
+      {
+        "year": 2006,
+        "pop": 26699043,
+        "births": 558517,
+        "br": 20.92,
+        "imr": 34.1,
+        "u5": 42.19,
+        "mig": -29197
+      },
+      {
+        "year": 2007,
+        "pop": 27076008,
+        "births": 601991,
+        "br": 22.23,
+        "imr": 31.64,
+        "u5": 38.98,
+        "mig": -27013
+      },
+      {
+        "year": 2008,
+        "pop": 27494774,
+        "births": 636649,
+        "br": 23.16,
+        "imr": 29.25,
+        "u5": 35.9,
+        "mig": -24028
+      },
+      {
+        "year": 2009,
+        "pop": 27939328,
+        "births": 646638,
+        "br": 23.14,
+        "imr": 26.97,
+        "u5": 32.99,
+        "mig": -20378
+      },
+      {
+        "year": 2010,
+        "pop": 28385506,
+        "births": 637218,
+        "br": 22.45,
+        "imr": 24.82,
+        "u5": 30.27,
+        "mig": -20380
+      },
+      {
+        "year": 2011,
+        "pop": 28823196,
+        "births": 632051,
+        "br": 21.93,
+        "imr": 22.84,
+        "u5": 27.77,
+        "mig": -20380
+      },
+      {
+        "year": 2012,
+        "pop": 29261903,
+        "births": 642549,
+        "br": 21.96,
+        "imr": 21.04,
+        "u5": 25.51,
+        "mig": -20381
+      },
+      {
+        "year": 2013,
+        "pop": 29724065,
+        "births": 683338,
+        "br": 22.99,
+        "imr": 19.41,
+        "u5": 23.48,
+        "mig": -20380
+      },
+      {
+        "year": 2014,
+        "pop": 30222994,
+        "births": 720690,
+        "br": 23.85,
+        "imr": 17.96,
+        "u5": 21.69,
+        "mig": -20381
+      },
+      {
+        "year": 2015,
+        "pop": 30749346,
+        "births": 737436,
+        "br": 23.98,
+        "imr": 16.68,
+        "u5": 20.11,
+        "mig": -16545
+      },
+      {
+        "year": 2016,
+        "pop": 31284568,
+        "births": 735600,
+        "br": 23.51,
+        "imr": 15.57,
+        "u5": 18.75,
+        "mig": -14839
+      },
+      {
+        "year": 2017,
+        "pop": 31819178,
+        "births": 738081,
+        "br": 23.2,
+        "imr": 14.6,
+        "u5": 17.56,
+        "mig": -13352
+      },
+      {
+        "year": 2018,
+        "pop": 32373490,
+        "births": 777185,
+        "br": 24.01,
+        "imr": 13.75,
+        "u5": 16.52,
+        "mig": -11516
+      },
+      {
+        "year": 2019,
+        "pop": 32964701,
+        "births": 814964,
+        "br": 24.72,
+        "imr": 13.0,
+        "u5": 15.61,
+        "mig": -9341
+      },
+      {
+        "year": 2020,
+        "pop": 33586372,
+        "births": 860945,
+        "br": 25.63,
+        "imr": 12.33,
+        "u5": 14.99,
+        "mig": -9208
+      },
+      {
+        "year": 2021,
+        "pop": 34243696,
+        "births": 905756,
+        "br": 26.45,
+        "imr": 11.76,
+        "u5": 14.32,
+        "mig": -9205
+      },
+      {
+        "year": 2022,
+        "pop": 34938955,
+        "births": 926734,
+        "br": 26.52,
+        "imr": 11.16,
+        "u5": 13.55,
+        "mig": -5007
+      },
+      {
+        "year": 2023,
+        "pop": 35652307,
+        "births": 943547,
+        "br": 26.46,
+        "imr": 11.14,
+        "u5": 13.59,
+        "mig": -6004
+      },
+      {
+        "year": 2024,
+        "pop": 36361859,
+        "births": 929292,
+        "br": 25.56,
+        "imr": 12.2,
+        "u5": 14.77,
+        "mig": -7066
+      }
+    ]
+  },
+  "futureDemographics": {
+    "Kyrgyzstan": [
+      {
+        "year": 2025,
+        "popAge0": 148.413,
+        "population": 7241.424,
+        "births": 149.483,
+        "crudeBirthRate": 20.491,
+        "infantMortalityRate": 11.709,
+        "under5Mortality": 14.14,
+        "netMigration": 1.815,
+        "netMigrationRate": 0.249
+      },
+      {
+        "year": 2026,
+        "popAge0": 147.595,
+        "population": 7348.645,
+        "births": 148.668,
+        "crudeBirthRate": 20.089,
+        "infantMortalityRate": 11.349,
+        "under5Mortality": 13.717,
+        "netMigration": 0.039,
+        "netMigrationRate": 0.005
+      },
+      {
+        "year": 2027,
+        "popAge0": 147.029,
+        "population": 7452.284,
+        "births": 148.267,
+        "crudeBirthRate": 19.759,
+        "infantMortalityRate": 10.957,
+        "under5Mortality": 13.255,
+        "netMigration": 0.64,
+        "netMigrationRate": 0.085
+      },
+      {
+        "year": 2028,
+        "popAge0": 146.837,
+        "population": 7555.076,
+        "births": 148.207,
+        "crudeBirthRate": 19.488,
+        "infantMortalityRate": 10.588,
+        "under5Mortality": 12.82,
+        "netMigration": -1.191,
+        "netMigrationRate": -0.157
+      },
+      {
+        "year": 2029,
+        "popAge0": 147.054,
+        "population": 7654.905,
+        "births": 148.645,
+        "crudeBirthRate": 19.293,
+        "infantMortalityRate": 10.209,
+        "under5Mortality": 12.373,
+        "netMigration": -0.956,
+        "netMigrationRate": -0.124
+      },
+      {
+        "year": 2030,
+        "popAge0": 147.689,
+        "population": 7754.31,
+        "births": 149.392,
+        "crudeBirthRate": 19.144,
+        "infantMortalityRate": 9.854,
+        "under5Mortality": 11.953,
+        "netMigration": -1.312,
+        "netMigrationRate": -0.168
+      }
+    ],
+    "Lesotho": [
+      {
+        "year": 2025,
+        "popAge0": 53.077,
+        "population": 2350.397,
+        "births": 55.434,
+        "crudeBirthRate": 23.456,
+        "infantMortalityRate": 52.922,
+        "under5Mortality": 67.186,
+        "netMigration": -5.192,
+        "netMigrationRate": -2.197
+      },
+      {
+        "year": 2026,
+        "popAge0": 53.022,
+        "population": 2376.252,
+        "births": 55.312,
+        "crudeBirthRate": 23.149,
+        "infantMortalityRate": 51.282,
+        "under5Mortality": 65.181,
+        "netMigration": -4.876,
+        "netMigrationRate": -2.041
+      },
+      {
+        "year": 2027,
+        "popAge0": 52.951,
+        "population": 2402.42,
+        "births": 55.177,
+        "crudeBirthRate": 22.844,
+        "infantMortalityRate": 49.708,
+        "under5Mortality": 63.25,
+        "netMigration": -5.099,
+        "netMigrationRate": -2.111
+      },
+      {
+        "year": 2028,
+        "popAge0": 52.898,
+        "population": 2428.317,
+        "births": 55.092,
+        "crudeBirthRate": 22.565,
+        "infantMortalityRate": 48.236,
+        "under5Mortality": 61.438,
+        "netMigration": -4.714,
+        "netMigrationRate": -1.931
+      },
+      {
+        "year": 2029,
+        "popAge0": 52.907,
+        "population": 2454.567,
+        "births": 55.086,
+        "crudeBirthRate": 22.323,
+        "infantMortalityRate": 46.794,
+        "under5Mortality": 59.656,
+        "netMigration": -4.761,
+        "netMigrationRate": -1.929
+      },
+      {
+        "year": 2030,
+        "popAge0": 52.952,
+        "population": 2480.799,
+        "births": 55.094,
+        "crudeBirthRate": 22.092,
+        "infantMortalityRate": 45.428,
+        "under5Mortality": 57.962,
+        "netMigration": -4.982,
+        "netMigrationRate": -1.998
+      }
+    ],
+    "Uzbekistan": [
+      {
+        "year": 2025,
+        "popAge0": 910.374,
+        "population": 36713.264,
+        "births": 911.213,
+        "crudeBirthRate": 24.592,
+        "infantMortalityRate": 11.877,
+        "under5Mortality": 14.381,
+        "netMigration": -6.987,
+        "netMigrationRate": -0.189
+      },
+      {
+        "year": 2026,
+        "popAge0": 893.396,
+        "population": 37393.592,
+        "births": 894.379,
+        "crudeBirthRate": 23.708,
+        "infantMortalityRate": 11.553,
+        "under5Mortality": 13.998,
+        "netMigration": -4.517,
+        "netMigrationRate": -0.12
+      },
+      {
+        "year": 2027,
+        "popAge0": 879.137,
+        "population": 38054.853,
+        "births": 881.88,
+        "crudeBirthRate": 22.98,
+        "infantMortalityRate": 11.273,
+        "under5Mortality": 13.665,
+        "netMigration": -5.703,
+        "netMigrationRate": -0.149
+      },
+      {
+        "year": 2028,
+        "popAge0": 868.408,
+        "population": 38697.354,
+        "births": 872.359,
+        "crudeBirthRate": 22.362,
+        "infantMortalityRate": 11.06,
+        "under5Mortality": 13.41,
+        "netMigration": -6.413,
+        "netMigrationRate": -0.164
+      },
+      {
+        "year": 2029,
+        "popAge0": 860.252,
+        "population": 39324.625,
+        "births": 864.944,
+        "crudeBirthRate": 21.823,
+        "infantMortalityRate": 10.807,
+        "under5Mortality": 13.109,
+        "netMigration": -1.833,
+        "netMigrationRate": -0.046
+      },
+      {
+        "year": 2030,
+        "popAge0": 854.215,
+        "population": 39944.077,
+        "births": 859.689,
+        "crudeBirthRate": 21.36,
+        "infantMortalityRate": 10.583,
+        "under5Mortality": 12.842,
+        "netMigration": -2.154,
+        "netMigrationRate": -0.054
+      }
+    ]
   },
   "mcData": {
     "Kyrgyzstan": [
@@ -499,48 +2184,48 @@
         "p5": 13.8,
         "p25": 39.7,
         "p50": 63.9,
-        "p75": 68.6,
-        "p95": 68.6
+        "p75": 84.5,
+        "p95": 117.3
       },
       {
         "year": 2026,
         "p5": 3.0,
         "p25": 41.1,
         "p50": 63.8,
-        "p75": 68.6,
-        "p95": 68.6
+        "p75": 87.0,
+        "p95": 126.9
       },
       {
         "year": 2027,
         "p5": 0.0,
         "p25": 34.6,
         "p50": 64.4,
-        "p75": 68.6,
-        "p95": 68.6
+        "p75": 94.2,
+        "p95": 127.6
       },
       {
         "year": 2028,
         "p5": 0.0,
         "p25": 35.7,
         "p50": 64.0,
-        "p75": 68.6,
-        "p95": 68.6
+        "p75": 101.4,
+        "p95": 127.6
       },
       {
         "year": 2029,
         "p5": 0.0,
         "p25": 19.2,
         "p50": 64.7,
-        "p75": 68.6,
-        "p95": 68.6
+        "p75": 107.7,
+        "p95": 127.6
       },
       {
         "year": 2030,
         "p5": 0.0,
         "p25": 15.1,
         "p50": 63.6,
-        "p75": 68.6,
-        "p95": 68.6
+        "p75": 108.8,
+        "p95": 127.6
       }
     ],
     "Uzbekistan": [
@@ -593,6 +2278,132 @@
         "p95": 1267.4
       }
     ]
+  },
+  "scenarios": {
+    "Kyrgyzstan": {
+      "baseline": [
+        189.074,
+        187.777,
+        187.121,
+        186.874,
+        187.085,
+        187.725
+      ],
+      "optimistic": [
+        190.097,
+        196.346,
+        197.368,
+        196.539,
+        195.918,
+        196.718
+      ],
+      "pessimistic": [
+        195.673,
+        178.414,
+        174.077,
+        175.626,
+        175.39,
+        175.229
+      ],
+      "pandemic": [
+        196.282,
+        186.669,
+        183.176,
+        183.859,
+        183.957,
+        184.165
+      ]
+    },
+    "Lesotho": {
+      "baseline": [
+        64.196,
+        59.351,
+        55.44,
+        55.131,
+        55.789,
+        55.235
+      ],
+      "optimistic": [
+        81.567,
+        95.299,
+        92.117,
+        84.717,
+        82.523,
+        83.501
+      ],
+      "pessimistic": [
+        62.524,
+        36.561,
+        26.669,
+        29.832,
+        36.308,
+        37.881
+      ],
+      "pandemic": [
+        80.248,
+        72.899,
+        62.135,
+        59.546,
+        61.48,
+        61.959
+      ]
+    },
+    "Uzbekistan": {
+      "baseline": [
+        1211.079,
+        1197.809,
+        1187.364,
+        1177.912,
+        1170.013,
+        1163.709
+      ],
+      "optimistic": [
+        1226.574,
+        1221.474,
+        1211.382,
+        1202.695,
+        1195.86,
+        1190.194
+      ],
+      "pessimistic": [
+        1181.62,
+        1151.067,
+        1137.509,
+        1126.154,
+        1115.965,
+        1108.105
+      ],
+      "pandemic": [
+        1197.074,
+        1173.771,
+        1161.431,
+        1151.165,
+        1141.736,
+        1134.567
+      ]
+    }
+  },
+  "scenarioMeta": {
+    "baseline": {
+      "label": "BASELINE",
+      "color": "#3498db",
+      "description": "UN medium-variant projections (no adjustment)"
+    },
+    "optimistic": {
+      "label": "OPTIMISTIC",
+      "color": "#2ecc71",
+      "description": "Strong health system, declining mortality, stable births"
+    },
+    "pessimistic": {
+      "label": "PESSIMISTIC",
+      "color": "#e74c3c",
+      "description": "Health system stress, rising mortality, declining coverage"
+    },
+    "pandemic": {
+      "label": "PANDEMIC SHOCK",
+      "color": "#9b59b6",
+      "description": "COVID-like disruption: coverage drops, migration halts"
+    }
   },
   "tornadoData": {
     "Kyrgyzstan": [
@@ -717,7 +2528,7 @@
       {
         "name": "Births",
         "impact": "HIGH",
-        "score": 2.72
+        "score": 2.59
       },
       {
         "name": "Birth Rate",
@@ -764,7 +2575,7 @@
       {
         "name": "Birth Rate",
         "impact": "HIGH",
-        "score": 9.28
+        "score": 8.98
       },
       {
         "name": "Pop Age 0",
@@ -1682,6 +3493,122 @@
         "year": 2024,
         "actual": 1223.27832,
         "predicted": 1236.3095312858268
+      }
+    ]
+  },
+  "costProjections": {
+    "Kyrgyzstan": [
+      {
+        "year": 2025,
+        "children": 141806,
+        "doses": 189074,
+        "costUSD": 60126
+      },
+      {
+        "year": 2026,
+        "children": 140833,
+        "doses": 187777,
+        "costUSD": 59713
+      },
+      {
+        "year": 2027,
+        "children": 140341,
+        "doses": 187121,
+        "costUSD": 59504
+      },
+      {
+        "year": 2028,
+        "children": 140156,
+        "doses": 186874,
+        "costUSD": 59426
+      },
+      {
+        "year": 2029,
+        "children": 140314,
+        "doses": 187085,
+        "costUSD": 59493
+      },
+      {
+        "year": 2030,
+        "children": 140794,
+        "doses": 187725,
+        "costUSD": 59697
+      }
+    ],
+    "Lesotho": [
+      {
+        "year": 2025,
+        "children": 48147,
+        "doses": 64196,
+        "costUSD": 20414
+      },
+      {
+        "year": 2026,
+        "children": 44513,
+        "doses": 59351,
+        "costUSD": 18874
+      },
+      {
+        "year": 2027,
+        "children": 41580,
+        "doses": 55440,
+        "costUSD": 17630
+      },
+      {
+        "year": 2028,
+        "children": 41348,
+        "doses": 55131,
+        "costUSD": 17532
+      },
+      {
+        "year": 2029,
+        "children": 41842,
+        "doses": 55789,
+        "costUSD": 17741
+      },
+      {
+        "year": 2030,
+        "children": 41426,
+        "doses": 55235,
+        "costUSD": 17565
+      }
+    ],
+    "Uzbekistan": [
+      {
+        "year": 2025,
+        "children": 908309,
+        "doses": 1211079,
+        "costUSD": 385123
+      },
+      {
+        "year": 2026,
+        "children": 898357,
+        "doses": 1197809,
+        "costUSD": 380903
+      },
+      {
+        "year": 2027,
+        "children": 890523,
+        "doses": 1187364,
+        "costUSD": 377582
+      },
+      {
+        "year": 2028,
+        "children": 883434,
+        "doses": 1177912,
+        "costUSD": 374576
+      },
+      {
+        "year": 2029,
+        "children": 877510,
+        "doses": 1170013,
+        "costUSD": 372064
+      },
+      {
+        "year": 2030,
+        "children": 872782,
+        "doses": 1163709,
+        "costUSD": 370059
       }
     ]
   }

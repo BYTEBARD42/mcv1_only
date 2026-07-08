@@ -1,213 +1,132 @@
-import React, { useState, useEffect } from 'react'
-import { loadDashboardData, computeOverallAccuracy } from './data'
-import ExecutiveOverview from './pages/ExecutiveOverview'
-import CountryDeepDive from './pages/CountryDeepDive'
-import ScenarioAnalysis from './pages/ScenarioAnalysis'
-import MonteCarlo from './pages/MonteCarlo'
-import SensitivityAnalysis from './pages/SensitivityAnalysis'
-import ModelPerformance from './pages/ModelPerformance'
+import { useState } from "react";
+import { useData } from "./lib/useData";
+import { StoreProvider, useStore } from "./store";
+import { ControlBar } from "./components/ControlBar";
+import { Overview } from "./pages/Overview";
+import { ForecastDemographics } from "./pages/ForecastDemographics";
+import { Uncertainty } from "./pages/Uncertainty";
+import { ScenariosSensitivity } from "./pages/ScenariosSensitivity";
 
-type Page = 'overview' | 'country' | 'scenario' | 'monte-carlo' | 'sensitivity' | 'model'
+const PAGES = [
+  { id: "overview", label: "Overview", el: <Overview /> },
+  { id: "forecast", label: "Forecast & demographics", el: <ForecastDemographics /> },
+  { id: "uncertainty", label: "Uncertainty", el: <Uncertainty /> },
+  { id: "scenarios", label: "Scenarios & sensitivity", el: <ScenariosSensitivity /> },
+] as const;
 
-const NAV: { id: Page; icon: React.ReactNode; label: string }[] = [
-  {
-    id: 'overview',
-    label: 'Overview',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'country',
-    label: 'Country',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'scenario',
-    label: 'Scenario',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 01-9 9"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'monte-carlo',
-    label: 'Monte Carlo',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'sensitivity',
-    label: 'Sensitivity',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
-      </svg>
-    ),
-  },
-  {
-    id: 'model',
-    label: 'Model',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-    ),
-  },
-]
-
-export default function App() {
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [page, setPage] = useState<Page>('overview')
-  const [country, setCountry] = useState('All Countries')
-
-  useEffect(() => {
-    loadDashboardData()
-      .then(() => setLoading(false))
-      .catch(err => {
-        console.error('Failed to load dashboard data:', err)
-        setError(err.toString())
-        setLoading(false)
-      })
-  }, [])
-
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', color: 'var(--text-primary)' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 40, height: 40, borderRadius: '50%', border: '3px solid var(--blue)', borderTopColor: 'transparent', animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
-          <h2>Loading Data from Backend...</h2>
-          <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div style={{ padding: 40, color: 'red' }}>
-        <h2>Error Loading Dashboard</h2>
-        <pre>{error}</pre>
-      </div>
-    )
-  }
-
-  const pages: Record<Page, React.ReactNode> = {
-    overview: <ExecutiveOverview />,
-    country: <CountryDeepDive />,
-    scenario: <ScenarioAnalysis />,
-    'monte-carlo': <MonteCarlo />,
-    sensitivity: <SensitivityAnalysis />,
-    model: <ModelPerformance />,
-  }
+function Shell() {
+  const { data, dark, setDark } = useStore();
+  const [page, setPage] = useState<string>("overview");
+  const current = PAGES.find((p) => p.id === page)!;
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
+    <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside style={{
-        width: 72, flexShrink: 0,
-        background: 'var(--bg-sidebar)',
-        borderRight: '1px solid var(--border)',
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'center', paddingTop: 20, paddingBottom: 20,
-        gap: 8,
-      }}>
-        {/* Logo */}
-        <div style={{
-          width: 36, height: 36, borderRadius: 10,
-          background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          marginBottom: 24,
-          boxShadow: '0 0 20px rgba(52,152,219,0.4)',
-        }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-            <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm0 2a5 5 0 100 10A5 5 0 0012 7zm0 2a3 3 0 110 6A3 3 0 0112 9z"/>
-          </svg>
+      <aside className="hidden w-[236px] shrink-0 flex-col border-r border-line bg-white px-3 py-4 dark:border-white/[0.06] dark:bg-navy-800 lg:flex">
+        <div className="flex items-center gap-2.5 px-2.5">
+          <span className="grid h-7 w-7 place-items-center rounded-md bg-ink text-[12px] font-bold text-white dark:bg-white dark:text-ink">
+            M1
+          </span>
+          <div className="text-[13px] font-semibold tracking-tightish text-ink dark:text-white">
+            MCV1 Forecast
+          </div>
         </div>
-        {NAV.map(n => (
-          <button
-            key={n.id}
-            onClick={() => setPage(n.id)}
-            title={n.label}
-            style={{
-              position: 'relative',
-              width: 44, height: 44,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              borderRadius: 10,
-              background: page === n.id ? 'rgba(52,152,219,0.15)' : 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              color: page === n.id ? 'var(--blue)' : 'var(--text-muted)',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { if (page !== n.id) (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)' }}
-            onMouseLeave={e => { if (page !== n.id) (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)' }}
-          >
-            {page === n.id && (
-              <span style={{
-                position: 'absolute', left: -14, top: '50%', transform: 'translateY(-50%)',
-                width: 3, height: 24, background: 'var(--blue)', borderRadius: '0 3px 3px 0',
-              }} />
-            )}
-            {n.icon}
+
+        <div className="mt-6 px-2.5 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+          Analysis
+        </div>
+        <nav className="mt-1.5 space-y-0.5">
+          {PAGES.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => setPage(p.id)}
+              className={`nav-link w-full text-left ${page === p.id ? "nav-link-active" : "nav-link-idle"}`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="mt-auto space-y-3 pt-6">
+          <div className="rounded-md border border-line px-3 py-2.5 dark:border-white/[0.06]">
+            <div className="text-[11px] font-medium text-zinc-400">Model accuracy</div>
+            <div className="mt-1 flex items-baseline gap-1.5">
+              <span className="text-[15px] font-semibold tabular-nums text-ink dark:text-white">
+                {(100 - data.meta.modelMAPE).toFixed(1)}%
+              </span>
+              <span className="text-[11px] text-zinc-400">{data.meta.modelMAPE}% MAPE</span>
+            </div>
+          </div>
+          <button onClick={() => setDark(!dark)} className="btn-ghost w-full">
+            {dark ? "Light" : "Dark"} mode
           </button>
-        ))}
+        </div>
       </aside>
 
       {/* Main */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        {/* Topbar */}
-        <header style={{
-          height: 60, flexShrink: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '0 24px',
-          borderBottom: '1px solid var(--border)',
-          background: 'rgba(15,15,35,0.95)',
-          backdropFilter: 'blur(10px)',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>
-              Gavi MCV1 Forecast Dashboard
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <select
-              className="pill-select"
-              value={country}
-              onChange={e => setCountry(e.target.value)}
-            >
-              <option>All Countries</option>
-              <option>Kyrgyzstan</option>
-              <option>Lesotho</option>
-              <option>Uzbekistan</option>
-            </select>
-            <div style={{
-              padding: '5px 14px', borderRadius: 20,
-              background: 'rgba(52,152,219,0.12)',
-              border: '1px solid rgba(52,152,219,0.3)',
-              fontSize: 12, color: 'var(--blue)', fontWeight: 500,
-              fontFamily: 'DM Mono, monospace',
-            }}>
-              2025–2030 &nbsp;|&nbsp; Model Accuracy: {computeOverallAccuracy().toFixed(2)}%
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-10 border-b border-line bg-[#fafafa]/95 px-6 py-3 dark:border-white/[0.06] dark:bg-navy-900/95">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-[15px] font-semibold tracking-tightish text-ink dark:text-white">
+                {current.label}
+              </h1>
+              <p className="muted mt-0.5">
+                Gavi / UNICEF MCV1 procurement outlook · {data.meta.horizon[0]}–{data.meta.horizon[1]}
+              </p>
             </div>
+            <select
+              value={page}
+              onChange={(e) => setPage(e.target.value)}
+              className="field lg:hidden"
+            >
+              {PAGES.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
           </div>
         </header>
 
-        {/* Content */}
-        <main style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
-          {pages[page]}
+        <main className="mx-auto w-full max-w-[1280px] flex-1 space-y-4 px-6 py-5">
+          <ControlBar />
+          {current.el}
+          <footer className="pt-3 text-[11px] text-zinc-400">
+            Sources: UN World Population Prospects (demographics) · WHO/UNICEF (MCV1) ·
+            Cost basis: {data.costConfig.source}
+          </footer>
         </main>
       </div>
     </div>
-  )
+  );
+}
+
+export default function App() {
+  const state = useData();
+
+  if (state.status === "loading") return <Centered>Loading forecast data…</Centered>;
+  if (state.status === "error")
+    return (
+      <Centered>
+        <div className="text-rose-500">Failed to load data.json — {state.error}</div>
+        <div className="muted mt-2">
+          Run <code className="rounded bg-zinc-100 px-1 dark:bg-white/10">python backend/generate_data.py</code> first.
+        </div>
+      </Centered>
+    );
+
+  return (
+    <StoreProvider data={state.data}>
+      <Shell />
+    </StoreProvider>
+  );
+}
+
+function Centered({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid min-h-screen place-items-center bg-[#fafafa] px-6 text-center text-zinc-500 dark:bg-navy-900">
+      <div>{children}</div>
+    </div>
+  );
 }
