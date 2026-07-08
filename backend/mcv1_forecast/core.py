@@ -14,17 +14,31 @@ COUNTRIES = ['Kyrgyzstan', 'Lesotho', 'Uzbekistan']
 FEATURE_COLS = [
     'Year',
     'Total Population, as of 1 January (thousands)',
+    'Total Population, as of 1 July (thousands)',
     'Births (thousands)',
     'Crude Birth Rate (births per 1,000 population)',
     'Infant Deaths, under age 1 (thousands)',
     'Infant Mortality Rate (infant deaths per 1,000 live births)',
+    'Under-Five Deaths, under age 5 (thousands)',
+    'Under-Five Mortality (deaths under age 5 per 1,000 live births)',
+    'Net Number of Migrants (thousands)',
     'Net Migration Rate (per 1,000 population)',
     'Pop_Age_0(In Thousands)',
     'Births_per_1000pop',
     'Infant_mort_ratio',
     'U5_mort_ratio',
+    'Net_migration_abs',
+    'Years_since_2000',
+    'is_pandemic_year',
+    'MCV1_lag_1',
+    'MCV1_lag_2',
     'MCV1_lag_3',
     'MCV1_roll3_mean',
+    'MCV1_roll5_mean',
+    'Coverage_roll3_mean',
+    'MCV1_roll3_std',
+    'Births_roll3_std',
+    'MCV1_YoY_growth',
     'Births_YoY_growth',
     'Population_YoY_growth',
     'BirthRate_change',
@@ -70,6 +84,36 @@ def engineer_features(df_in, target_col=TARGET):
     df["InfantMortality_change"] = df.groupby("Country")[
         "Infant Mortality Rate (infant deaths per 1,000 live births)"
     ].transform(lambda x: x.diff().shift(1))
+    
+    # ── new features 
+    df["Net_migration_abs"] = df["Net Number of Migrants (thousands)"].abs()
+    df["Years_since_2000"] = df["Year"] - 2000
+    df["is_pandemic_year"] = df["Year"].isin([2020, 2021]).astype(int)
+    
+    df["MCV1_lag_1"] = df.groupby("Country")[target_col].shift(1)
+    df["MCV1_lag_2"] = df.groupby("Country")[target_col].shift(2)
+    
+    df["MCV1_roll5_mean"] = df.groupby("Country")[target_col].transform(
+        lambda x: x.shift(1).rolling(5, min_periods=1).mean()
+    )
+    
+    df["Coverage"] = df[target_col] / df["Pop_Age_0(In Thousands)"]
+    df["Coverage_roll3_mean"] = df.groupby("Country")["Coverage"].transform(
+        lambda x: x.shift(1).rolling(3, min_periods=1).mean()
+    )
+    
+    df["MCV1_roll3_std"] = df.groupby("Country")[target_col].transform(
+        lambda x: x.shift(1).rolling(3, min_periods=2).std().fillna(0)
+    )
+    
+    df["Births_roll3_std"] = df.groupby("Country")["Births (thousands)"].transform(
+        lambda x: x.shift(1).rolling(3, min_periods=2).std().fillna(0)
+    )
+    
+    df["MCV1_YoY_growth"] = df.groupby("Country")[target_col].transform(
+        lambda x: x.pct_change().shift(1)
+    )
+
     df["Country_Lesotho"] = (df["Country"] == "Lesotho").astype(int)
     df["Country_Uzbekistan"] = (df["Country"] == "Uzbekistan").astype(int)
     required_history = ["MCV1_lag_3", "Births_YoY_growth"]
@@ -88,6 +132,9 @@ def recursive_forecast(df_raw, model, feature_cols, dummy_cols, split_year,
         years_to_predict = sorted(
             df_raw[df_raw["Year"] >= split_year]["Year"].unique().tolist()
         )
+
+    # Cache retrained models in backtest mode to avoid redundant training per country
+    retrained_models = {}
 
     for country in COUNTRIES:
         country_raw = df_raw[
@@ -117,6 +164,17 @@ def recursive_forecast(df_raw, model, feature_cols, dummy_cols, split_year,
                 ].iloc[0:1].copy()
             except IndexError:
                 continue
+            
+            # 1. Walk-forward validation: retrain on all actual data strictly before year Y
+            if future_demo_df is None:
+                if year not in retrained_models:
+                    print(f"\n--- Walk-forward retraining for year {year} ---")
+                    # train_model uses data < split_year (which is 'year' here)
+                    m, _, _, _ = train_model(df_raw, split_year=year, target_col=target_col)
+                    retrained_models[year] = m
+                current_model = retrained_models[year]
+            else:
+                current_model = model
 
             current_raw = pd.concat([country_raw, raw_row], ignore_index=True)
             engineered_df, _, _ = engineer_features(current_raw, target_col)
@@ -129,7 +187,8 @@ def recursive_forecast(df_raw, model, feature_cols, dummy_cols, split_year,
             except IndexError:
                 continue
 
-            pred = model.predict(X_row)[0]
+            # 2. Predict year Y using that freshly retrained model (or fixed model if forecasting)
+            pred = current_model.predict(X_row)[0]
             actual = raw_row.iloc[0].get(target_col, np.nan)
 
             results.append({
@@ -139,7 +198,14 @@ def recursive_forecast(df_raw, model, feature_cols, dummy_cols, split_year,
                 "Actual": actual,
             })
 
-            raw_row[target_col] = pred
+            # 3. Add the value to the training data before moving to year Y+1
+            if future_demo_df is not None:
+                # Forecast mode: feed predicted value back in
+                raw_row[target_col] = pred
+            else:
+                # Backtest mode: add the actual value
+                raw_row[target_col] = actual
+
             country_raw = pd.concat(
                 [country_raw, raw_row], ignore_index=True
             )

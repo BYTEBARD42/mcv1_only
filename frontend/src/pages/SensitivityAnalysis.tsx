@@ -3,12 +3,12 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell,
   ReferenceLine, LineChart, Line, ResponsiveContainer,
 } from 'recharts'
-import { TORNADO_DATA, FEATURE_IMPORTANCE, ELASTICITY_DATA } from '../data'
+import { TORNADO_DATA, FEATURE_IMPORTANCE, ELASTICITY_DATA, Country } from '../data'
 
 const COUNTRIES = ['Kyrgyzstan', 'Lesotho', 'Uzbekistan']
 const YEARS = ['2025', '2026', '2027', '2028', '2029', '2030']
 
-function TornadoBar({ data }: { data: typeof TORNADO_DATA }) {
+function TornadoBar({ data }: { data: any[] }) {
   // Build recharts-friendly data: one entry per feature, with pos/neg values
   const chartData = data.map(d => ({
     feature: d.feature,
@@ -62,9 +62,15 @@ const IMPACT_COLORS: Record<string, string> = {
 }
 
 export default function SensitivityAnalysis() {
-  const [selectedCountry, setSelectedCountry] = useState('Kyrgyzstan')
+  const [selectedCountry, setSelectedCountry] = useState<Country>('Kyrgyzstan')
   const [selectedYear, setSelectedYear] = useState('2026')
-  const [selectedFeature] = useState('Births (thousands)')
+  const [selectedFeature, setSelectedFeature] = useState('Births')
+
+  const tornado = TORNADO_DATA[selectedCountry] || []
+  const importance = FEATURE_IMPORTANCE[selectedCountry] || []
+  const elasticityMap = ELASTICITY_DATA[selectedCountry] || {}
+  const features = Object.keys(elasticityMap)
+  const currentElasticity = elasticityMap[selectedFeature] || (features.length > 0 ? elasticityMap[features[0]] : [])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -84,7 +90,7 @@ export default function SensitivityAnalysis() {
       <div className="card">
         <div className="chart-title">Sensitivity Tornado — {selectedCountry} ({selectedYear})</div>
         <div className="chart-subtitle">Impact of ±5% perturbation on each demographic input</div>
-        <TornadoBar data={TORNADO_DATA} />
+        <TornadoBar data={tornado} />
       </div>
 
       {/* Bottom row */}
@@ -93,13 +99,13 @@ export default function SensitivityAnalysis() {
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
             <div className="chart-title">Elasticity Curve</div>
-            <select className="pill-select" style={{ fontSize: 11, padding: '3px 10px' }}>
-              <option>Births (thousands)</option>
+            <select className="pill-select" style={{ fontSize: 11, padding: '3px 10px' }} value={selectedFeature} onChange={e => setSelectedFeature(e.target.value)}>
+              {features.map(f => <option key={f}>{f}</option>)}
             </select>
           </div>
           <div className="chart-subtitle">How does changing this input affect the forecast?</div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={ELASTICITY_DATA} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
+            <LineChart data={currentElasticity} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-line)" />
               <XAxis
                 dataKey="x"
@@ -132,7 +138,7 @@ export default function SensitivityAnalysis() {
         <div className="card">
           <div className="chart-title" style={{ marginBottom: 16 }}>Feature Impact Ranking</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {FEATURE_IMPORTANCE.map((f, i) => (
+            {importance.map((f: any, i: number) => (
               <div key={f.name} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ width: 20, fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'DM Mono, monospace', flexShrink: 0 }}>
                   {String(i + 1).padStart(2, '0')}

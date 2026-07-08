@@ -18,9 +18,9 @@ export const COUNTRY_COLORS: Record<Country, string> = {
 export let FORECAST_BASELINE: Record<Country, number[]> = {} as any;
 export let DEMO_DATA: Record<Country, any> = {} as any;
 export let MC_DATA: Record<Country, any[]> = {} as any;
-export let TORNADO_DATA: any[] = [];
-export let FEATURE_IMPORTANCE: any[] = [];
-export let ELASTICITY_DATA: any[] = [];
+export let TORNADO_DATA: Record<Country, any[]> = {} as any;
+export let FEATURE_IMPORTANCE: Record<Country, any[]> = {} as any;
+export let ELASTICITY_DATA: Record<Country, Record<string, any[]>> = {} as any;
 export let BACKTEST: Record<Country, any[]> = {} as any;
 
 let kgHistorical: number[] = [];
