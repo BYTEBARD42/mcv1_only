@@ -71,19 +71,19 @@ def engineer_features(df_in, target_col=TARGET):
     )
     df["Births_YoY_growth"] = df.groupby("Country")[
         "Births (thousands)"
-    ].transform(lambda x: x.pct_change().shift(1))
+    ].transform(lambda x: x.pct_change())
 
     df["Population_YoY_growth"] = df.groupby("Country")[
         "Total Population, as of 1 July (thousands)"
-    ].transform(lambda x: x.pct_change().shift(1))
+    ].transform(lambda x: x.pct_change())
 
     df["BirthRate_change"] = df.groupby("Country")[
         "Crude Birth Rate (births per 1,000 population)"
-    ].transform(lambda x: x.diff().shift(1))
+    ].transform(lambda x: x.diff())
 
     df["InfantMortality_change"] = df.groupby("Country")[
         "Infant Mortality Rate (infant deaths per 1,000 live births)"
-    ].transform(lambda x: x.diff().shift(1))
+    ].transform(lambda x: x.diff())
     
     # ── new features 
     df["Net_migration_abs"] = df["Net Number of Migrants (thousands)"].abs()
@@ -107,7 +107,7 @@ def engineer_features(df_in, target_col=TARGET):
     )
     
     df["Births_roll3_std"] = df.groupby("Country")["Births (thousands)"].transform(
-        lambda x: x.shift(1).rolling(3, min_periods=2).std().fillna(0)
+        lambda x: x.rolling(3, min_periods=2).std().fillna(0)
     )
     
     df["MCV1_YoY_growth"] = df.groupby("Country")[target_col].transform(
@@ -199,12 +199,9 @@ def recursive_forecast(df_raw, model, feature_cols, dummy_cols, split_year,
             })
 
             # 3. Add the value to the training data before moving to year Y+1
-            if future_demo_df is not None:
-                # Forecast mode: feed predicted value back in
-                raw_row[target_col] = pred
-            else:
-                # Backtest mode: add the actual value
-                raw_row[target_col] = actual
+            # Feed predicted value back in for both Forecast and Backtest modes 
+            # to properly evaluate multi-step trajectory compounding error
+            raw_row[target_col] = pred
 
             country_raw = pd.concat(
                 [country_raw, raw_row], ignore_index=True

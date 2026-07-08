@@ -125,7 +125,7 @@ export default function SensitivityAnalysis() {
               />
               <Tooltip
                 contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }}
-                formatter={(v: any) => [`${v.toFixed(2)}%`, 'MCV2 change']}
+                formatter={(v: any) => [`${v.toFixed(2)}%`, 'MCV1 change']}
                 labelFormatter={v => `Input: ${v}%`}
               />
               <ReferenceLine x={0} stroke="rgba(255,255,255,0.2)" strokeDasharray="4 4" />

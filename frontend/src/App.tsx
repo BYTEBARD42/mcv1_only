@@ -177,7 +177,7 @@ export default function App() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>
-              Gavi MCV2 Forecast Dashboard
+              Gavi MCV1 Forecast Dashboard
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

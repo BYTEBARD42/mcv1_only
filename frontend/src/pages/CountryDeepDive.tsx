@@ -114,7 +114,7 @@ export default function CountryDeepDive() {
         {/* Age distribution */}
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <div className="chart-title">Population Age Distribution (2025)</div>
+            <div className="chart-title">Population Age Distribution (2025, est.)</div>
             <select className="pill-select" style={{ fontSize: 12, padding: '4px 12px' }}>
               <option>Year: 2025</option>
             </select>
@@ -138,7 +138,7 @@ export default function CountryDeepDive() {
 
         {/* Forecast trajectory */}
         <div className="card">
-          <div className="chart-title" style={{ marginBottom: 4 }}>MCV2 Forecast Trajectory</div>
+          <div className="chart-title" style={{ marginBottom: 4 }}>MCV1 Forecast Trajectory</div>
           <div className="chart-subtitle">2015–2030 &nbsp;·&nbsp; solid = historical, dashed = forecast</div>
           <ResponsiveContainer width="100%" height={240}>
             <LineChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>

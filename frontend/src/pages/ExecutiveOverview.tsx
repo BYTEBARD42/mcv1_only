@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  Legend, ReferenceLine, ResponsiveContainer, Brush
+  Legend, ReferenceLine, ResponsiveContainer
 } from 'recharts'
-import { COUNTRIES, COUNTRY_COLORS, getCombinedChartData, FORECAST_BASELINE, FORECAST_YEARS, BACKTEST, getOverviewKPIs } from '../data'
+import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, type Country, getCombinedChartData, FORECAST_BASELINE, FORECAST_YEARS, BACKTEST, getOverviewKPIs } from '../data'
 
 function KpiCard({ label, value, sub, subColor, icon, accentColor }: {
   label: string; value: string; sub: string; subColor: string; icon: React.ReactNode; accentColor: string
@@ -38,39 +38,26 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
   )
 }
 
-// Build multi-country chart data
-function buildOverviewData() {
-  const kgData = getCombinedChartData('Kyrgyzstan')
-  const lsData = getCombinedChartData('Lesotho')
-  const uzData = getCombinedChartData('Uzbekistan')
+// Build single-country chart data
+function buildCountryData(country: Country) {
+  const data = getCombinedChartData(country)
+  const bt = BACKTEST[country] || []
 
-  const kgBt = BACKTEST['Kyrgyzstan'] || []
-  const lsBt = BACKTEST['Lesotho'] || []
-  const uzBt = BACKTEST['Uzbekistan'] || []
-
-  return kgData.map((d, i) => {
-    const kgB = kgBt.find(b => b.year === d.year)
-    const lsB = lsBt.find(b => b.year === d.year)
-    const uzB = uzBt.find(b => b.year === d.year)
-
+  return data.map(d => {
+    const b = bt.find(x => x.year === d.year)
     return {
       year: d.year,
-      kgHist: d.hist,
-      kgForecast: d.forecast,
-      kgBacktest: kgB ? kgB.predicted : null,
-      lsHist: lsData[i].hist,
-      lsForecast: lsData[i].forecast,
-      lsBacktest: lsB ? lsB.predicted : null,
-      uzHist: uzData[i].hist,
-      uzForecast: uzData[i].forecast,
-      uzBacktest: uzB ? uzB.predicted : null,
+      hist: d.hist,
+      forecast: d.forecast,
+      backtest: b ? b.predicted : null,
     }
   })
 }
 
 export default function ExecutiveOverview() {
-  const [yMax, setYMax] = useState<number>(1300)
-  const chartData = buildOverviewData()
+  const [country, setCountry] = useState<Country>('Kyrgyzstan')
+  const chartData = buildCountryData(country)
+  const color = COUNTRY_COLORS[country]
 
   const forecastSummary = COUNTRIES.map(c => {
     const vals = FORECAST_BASELINE[c]
@@ -92,16 +79,16 @@ export default function ExecutiveOverview() {
           icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>}
         />
         <KpiCard
-          label="MCV2 Forecast (2025)"
-          value={forecast2025.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+          label="MCV1 Forecast (2025)"
+          value={`${forecast2025.toFixed(1)}K`}
           sub="● Baseline projection"
           subColor="var(--blue)"
           accentColor="var(--blue)"
           icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 2v2m4-2v2M5 10h14M5 10a7 7 0 0014 0M5 10a7 7 0 000 10h14a7 7 0 000-10"/></svg>}
         />
         <KpiCard
-          label="MCV2 Forecast (2030)"
-          value={forecast2030.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+          label="MCV1 Forecast (2030)"
+          value={`${forecast2030.toFixed(1)}K`}
           sub="● End-period projection"
           subColor="var(--orange)"
           accentColor="var(--orange)"
@@ -121,19 +108,20 @@ export default function ExecutiveOverview() {
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
           <div>
-            <div className="chart-title">Historical & Forecasted MCV2 Targets (in thousands)</div>
+            <div className="chart-title">Historical & Forecasted MCV1 Targets (in thousands)</div>
             <div className="chart-subtitle">Solid = historical &nbsp;·&nbsp; Dashed = forecast (2025–2030) &nbsp;·&nbsp; Dotted = walk-forward (2020-2024)</div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: 8 }}>
-            <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>↕ Y-Axis Zoom: </span>
-            <input 
-              type="range" 
-              min={50} max={1500} step={50} 
-              value={yMax} 
-              onChange={e => setYMax(Number(e.target.value))}
-              style={{ width: 100, accentColor: 'var(--blue)' }}
-            />
-            <span style={{ fontSize: 12, width: 40, fontFamily: 'monospace' }}>{yMax}k</span>
+          <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--border)' }}>
+            {COUNTRIES.map(c => (
+              <button
+                key={c}
+                className={`tab-btn${country === c ? ' active' : ''}`}
+                onClick={() => setCountry(c)}
+                style={{ padding: '6px 12px', fontSize: 13 }}
+              >
+                {COUNTRY_FLAGS[c]} {c}
+              </button>
+            ))}
           </div>
         </div>
         <ResponsiveContainer width="100%" height={320}>
@@ -152,8 +140,6 @@ export default function ExecutiveOverview() {
               tickLine={false}
               axisLine={false}
               tickFormatter={v => `${v}`}
-              domain={[0, yMax]}
-              allowDataOverflow={true}
             />
             <Tooltip
               contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
@@ -166,26 +152,16 @@ export default function ExecutiveOverview() {
             />
             <ReferenceLine x={2024} stroke="rgba(255,255,255,0.2)" strokeDasharray="4 4" label={{ value: 'Forecast →', position: 'top', fill: 'var(--text-secondary)', fontSize: 11 }} />
 
-            <Line dataKey="kgHist" name="Kyrgyzstan" stroke={COUNTRY_COLORS['Kyrgyzstan']} strokeWidth={2} dot={false} connectNulls />
-            <Line dataKey="kgForecast" name="" stroke={COUNTRY_COLORS['Kyrgyzstan']} strokeWidth={2} strokeDasharray="5 4" dot={false} connectNulls legendType="none" />
-            <Line dataKey="kgBacktest" name="WF Val (Kyrgyzstan)" stroke={COUNTRY_COLORS['Kyrgyzstan']} strokeWidth={2} strokeDasharray="1 3" dot={false} connectNulls legendType="none" />
-
-            <Line dataKey="lsHist" name="Lesotho" stroke={COUNTRY_COLORS['Lesotho']} strokeWidth={2} dot={false} connectNulls />
-            <Line dataKey="lsForecast" name="" stroke={COUNTRY_COLORS['Lesotho']} strokeWidth={2} strokeDasharray="5 4" dot={false} connectNulls legendType="none" />
-            <Line dataKey="lsBacktest" name="WF Val (Lesotho)" stroke={COUNTRY_COLORS['Lesotho']} strokeWidth={2} strokeDasharray="1 3" dot={false} connectNulls legendType="none" />
-
-            <Line dataKey="uzHist" name="Uzbekistan" stroke={COUNTRY_COLORS['Uzbekistan']} strokeWidth={2} dot={false} connectNulls />
-            <Line dataKey="uzForecast" name="" stroke={COUNTRY_COLORS['Uzbekistan']} strokeWidth={2} strokeDasharray="5 4" dot={false} connectNulls legendType="none" />
-            <Line dataKey="uzBacktest" name="WF Val (Uzbekistan)" stroke={COUNTRY_COLORS['Uzbekistan']} strokeWidth={2} strokeDasharray="1 3" dot={false} connectNulls legendType="none" />
-            
-            <Brush dataKey="year" height={25} stroke="var(--blue)" fill="rgba(15,15,35,0.8)" tickFormatter={() => ''} />
+            <Line dataKey="hist" name="Historical" stroke="var(--gray-line)" strokeWidth={2} dot={false} connectNulls />
+            <Line dataKey="forecast" name="Forecast" stroke={color} strokeWidth={2} strokeDasharray="5 4" dot={false} connectNulls />
+            <Line dataKey="backtest" name="WF Val" stroke={color} strokeWidth={2} strokeDasharray="1 3" dot={false} connectNulls />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
       {/* Row 3: Summary table */}
       <div className="card">
-        <div className="chart-title" style={{ marginBottom: 16 }}>Forecast Summary (MCV2 Target in thousands)</div>
+        <div className="chart-title" style={{ marginBottom: 16 }}>Forecast Summary (MCV1 Target in thousands)</div>
         <table>
           <thead>
             <tr>

@@ -1,4 +1,4 @@
-// Historical + forecast data for MCV2 dashboard
+// Historical + forecast data for MCV1 dashboard
 
 export const COUNTRIES = ['Kyrgyzstan', 'Lesotho', 'Uzbekistan'] as const
 export type Country = typeof COUNTRIES[number]
@@ -41,6 +41,8 @@ export async function loadDashboardData() {
   
   DEMO_TRENDS = data.demographicTrends || {}
   HISTORICAL = data.historical
+  SCENARIO_DATA = data.scenarios || {}
+  SCENARIO_META = data.scenarioMeta || {}
 }
 
 export function getHistoricalSeries(country: Country) {
@@ -64,36 +66,23 @@ export function computeOverallAccuracy(): number {
 
 export function getOverviewKPIs() {
   const totalBirths2025 = COUNTRIES.reduce((sum, c) => sum + (DEMO_DATA[c]?.births2025 || 0), 0)
-  const forecast2025 = COUNTRIES.reduce((sum, c) => sum + ((FORECAST_BASELINE[c]?.[0] || 0) * 1000), 0)
-  const forecast2030 = COUNTRIES.reduce((sum, c) => sum + ((FORECAST_BASELINE[c]?.[5] || 0) * 1000), 0)
+  const forecast2025 = COUNTRIES.reduce((sum, c) => sum + (FORECAST_BASELINE[c]?.[0] || 0), 0)
+  const forecast2030 = COUNTRIES.reduce((sum, c) => sum + (FORECAST_BASELINE[c]?.[5] || 0), 0)
   const pctChange = ((forecast2030 - forecast2025) / forecast2025) * 100
   return { totalBirths2025, forecast2025, forecast2030, pctChange }
 }
 
 export const FORECAST_YEARS = [2025, 2026, 2027, 2028, 2029, 2030]
 
-export const SCENARIO_MULTIPLIERS = {
-  baseline: { label: 'Baseline', color: '#3498db' },
-  optimistic: { label: 'Optimistic', color: '#2ecc71' },
-  pessimistic: { label: 'Pessimistic', color: '#e74c3c' },
-  pandemic: { label: 'Pandemic', color: '#9b59b6' },
-}
-
-function applyScenario(base: number[], mult: number[]) {
-  return base.map((v, i) => +(v * mult[i]).toFixed(1))
-}
-
-const optMult = [1.02, 1.035, 1.05, 1.065, 1.08, 1.095]
-const pesMult = [0.95, 0.94, 0.93, 0.92, 0.91, 0.90]
-const panMult = [0.97, 0.96, 0.955, 0.95, 0.945, 0.94]
+export let SCENARIO_DATA: Record<Country, Record<string, number[]>> = {} as any;
+export let SCENARIO_META: Record<string, { label: string; description: string; color: string }> = {} as any;
 
 export function getScenarios(country: Country) {
-  const base = FORECAST_BASELINE[country]
-  return {
-    baseline: base,
-    optimistic: applyScenario(base, optMult),
-    pessimistic: applyScenario(base, pesMult),
-    pandemic: applyScenario(base, panMult),
+  return SCENARIO_DATA[country] || {
+    baseline: FORECAST_BASELINE[country],
+    optimistic: FORECAST_BASELINE[country],
+    pessimistic: FORECAST_BASELINE[country],
+    pandemic: FORECAST_BASELINE[country],
   }
 }
 

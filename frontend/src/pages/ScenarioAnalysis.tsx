@@ -2,14 +2,16 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ReferenceLine, ResponsiveContainer,
 } from 'recharts'
-import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, getScenarios, getHistoricalSeries, type Country } from '../data'
+import { COUNTRIES, COUNTRY_COLORS, COUNTRY_FLAGS, getScenarios, getHistoricalSeries, SCENARIO_META, type Country } from '../data'
 
-const SCENARIOS = [
-  { key: 'baseline', label: 'BASELINE', color: '#3498db', desc: 'UN medium-variant projections, no adjustments' },
-  { key: 'optimistic', label: 'OPTIMISTIC', color: '#2ecc71', desc: 'Strong health system, declining mortality (IMR ×0.85, Births ×1.02)' },
-  { key: 'pessimistic', label: 'PESSIMISTIC', color: '#e74c3c', desc: 'Health system stress, rising mortality (IMR ×1.15, Births ×0.95)' },
-  { key: 'pandemic', label: 'PANDEMIC SHOCK', color: '#9b59b6', desc: 'COVID-like disruption (Migration ×0.3, Births ×0.97)' },
-]
+function getScenariosMeta() {
+  return [
+    { key: 'baseline', label: SCENARIO_META?.baseline?.label || 'BASELINE', color: '#3498db', desc: SCENARIO_META?.baseline?.description || 'UN medium-variant projections, no adjustments' },
+    { key: 'optimistic', label: SCENARIO_META?.optimistic?.label || 'OPTIMISTIC', color: '#2ecc71', desc: SCENARIO_META?.optimistic?.description || 'IMR ×0.85, U5 Deaths ×0.85, Births ×1.02' },
+    { key: 'pessimistic', label: SCENARIO_META?.pessimistic?.label || 'PESSIMISTIC', color: '#e74c3c', desc: SCENARIO_META?.pessimistic?.description || 'IMR ×1.15, U5 Deaths ×1.15, Births ×0.95' },
+    { key: 'pandemic', label: SCENARIO_META?.pandemic?.label || 'PANDEMIC SHOCK', color: '#9b59b6', desc: SCENARIO_META?.pandemic?.description || 'Migration ×0.3, Births ×0.97' },
+  ]
+}
 
 const FORECAST_YEARS = [2025, 2026, 2027, 2028, 2029, 2030]
 
@@ -60,7 +62,7 @@ function ScenarioChart({ country }: { country: Country }) {
           />
           <ReferenceLine x={2024} stroke="rgba(255,255,255,0.15)" strokeDasharray="4 4" />
           <Line dataKey="hist" name="Historical" stroke="var(--gray-line)" strokeWidth={2} dot={false} connectNulls />
-          {SCENARIOS.map(s => (
+          {getScenariosMeta().map(s => (
             <Line key={s.key} dataKey={s.key} name={s.label} stroke={s.color} strokeWidth={2} dot={false} connectNulls strokeDasharray={s.key !== 'baseline' ? '5 3' : undefined} />
           ))}
         </LineChart>
@@ -88,7 +90,7 @@ export default function ScenarioAnalysis() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Scenario legend cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-        {SCENARIOS.map(s => (
+        {getScenariosMeta().map(s => (
           <div key={s.key} className="glass" style={{
             padding: '14px 16px',
             borderLeft: `3px solid ${s.color}`,
@@ -107,7 +109,7 @@ export default function ScenarioAnalysis() {
 
       {/* Impact table */}
       <div className="card">
-        <div className="chart-title" style={{ marginBottom: 16 }}>Scenario Impact Summary (2030 MCV2 Forecast)</div>
+        <div className="chart-title" style={{ marginBottom: 16 }}>Scenario Impact Summary (2030 MCV1 Forecast)</div>
         <table>
           <thead>
             <tr>
