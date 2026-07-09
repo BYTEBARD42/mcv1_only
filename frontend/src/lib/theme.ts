@@ -1,8 +1,8 @@
 // Refined chart color system — neutral ink + single indigo accent, restrained.
 export const C = {
   ink: "#18181b", // primary line (history)
-  accent: "#4f46e5", // indigo — forecast / primary accent
-  accentSoft: "#4f46e5",
+  accent: "#0089cf", // Gavi blue — forecast / primary accent
+  accentSoft: "#38a9dd",
   muted: "#a1a1aa", // zinc-400
   grid: "rgba(113,113,122,0.14)",
   // semantic (desaturated)
@@ -14,8 +14,8 @@ export const C = {
   // legacy aliases used across pages
   navy: "#18181b",
   navyLight: "#52525b",
-  teal: "#4f46e5",
-  tealLight: "#818cf8",
+  teal: "#0089cf",
+  tealLight: "#38a9dd",
   red: "#e11d48",
   green: "#059669",
   purple: "#7c3aed",

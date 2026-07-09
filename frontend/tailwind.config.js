@@ -17,9 +17,9 @@ export default {
           900: "#0a0a0a", // dark app bg
         },
         teal: {
-          DEFAULT: "#4f46e5", // accent (indigo-600)
-          light: "#818cf8",
-          dark: "#4338ca",
+          DEFAULT: "#0089cf", // accent — Gavi brand blue
+          light: "#38a9dd",
+          dark: "#006ba3",
         },
         ink: "#171717",
         line: "#ececee",
